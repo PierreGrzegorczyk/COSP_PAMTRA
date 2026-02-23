@@ -1,0 +1,45 @@
+# ==================================================
+# 1D Input File from LMDZ
+# ==================================================
+# Path to the 1D LMDZ NetCDF file used as input.
+
+LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v5/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
+#LMDZ_output1D: '/home/grzegorc/NAWDIC/curtain_lmdz.nc'
+
+# ==================================================
+# COSP Parameters
+# ==================================================
+# npoint  : total number of horizontal grid points
+# nsubcol : number of subcolumns used by COSP
+# nz      : number of vertical levels
+
+npoint: 672
+nsubcol: 30
+nz: 95
+
+# Output NetCDF file produced by COSP
+# (An additional COSP output file is generated internally and later read by PAMTRA.)
+FOUTPUTcosp: '../data/my_outputs/Output_COSP.nc'
+
+# ==================================================
+# PAMTRA Parameters
+# ==================================================
+
+# isel and jsel define a subset of points to process.
+# Allows you to run the simulator for a part of the dataset.
+# This is especially useful when npoint is large: 
+
+isel: 288 # starting index of the selection: should be smaller than jsel
+jsel: 576 # ending index of the selection: should be smaller than npoint 
+
+
+### Radar configuration
+Radar_type: "'BASTA'" #MRR, STXPOL, BASTA, MIRA35C
+Run_pamtra: True      # If False, PAMTRA execution is skipped: useful for debugging
+Run_parall: True      # Enable parallel processing (faster execution), necessary for doppler spectra
+Run_spectra: True    # Compute Doppler spectra (increases runtime)
+Write_output: FALSE    # Write PAMTRA results in an output file
+
+  #FOUTPUTpamtra: "../Ouput_golden_case_D17_MIRAv6_ssrga_spectra_Ka.nc"
+FOUTPUTpamtra: "../MIRA_D17.nc"
+#FOUTPUTpamtra: "../NAWDIC.nc"
