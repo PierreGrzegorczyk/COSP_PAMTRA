@@ -8,8 +8,8 @@ LIBDIR := lib/
 PYTDIR := python/pyPamtra
 PYINSTDIR := ~/lib/python/
 
-gitHash    := $(shell git show -s --pretty=format:%H)
-gitVersion := $(shell git describe --tags)-$(shell git name-rev --name-only HEAD)
+#gitHash    := $(shell git show -s --pretty=format:%H)
+#gitVersion := $(shell git describe --tags)-$(shell git name-rev --name-only HEAD)
 
 NCCONF = $(shell which nf-config || which nc-config) # on newer Ubuntu version C and Fortran libraries have their own configure scripts
 F2PY := $(shell which f2py || which f2py3 || which f2py2.7) # on newer Ubuntu systems, only f2py2.7 is available
@@ -147,16 +147,16 @@ pamtra: FCFLAGS += -O2
 pamtra: NCFLAGS += -O2
 pamtra: warning  $(FOBJECTS) $(BINDIR)$(BIN) | $(BINDIR)
 
-$(OBJDIR)versionNumber.auto.o: .git/HEAD .git/index
-	echo "!edit in makefile only!" > $(SRCDIR)versionNumber.auto.f90
-	echo "subroutine versionNumber(gitVersion,gitHash)" >> $(SRCDIR)versionNumber.auto.f90
-	echo "implicit none" >> $(SRCDIR)versionNumber.auto.f90
-	echo "character(40), intent(out) ::gitVersion,gitHash" >> $(SRCDIR)versionNumber.auto.f90
-	echo "gitVersion = '$(gitVersion)'" >> $(SRCDIR)versionNumber.auto.f90
-	echo "gitHash = '$(gitHash)'" >> $(SRCDIR)versionNumber.auto.f90
-	echo "return" >> $(SRCDIR)versionNumber.auto.f90
-	echo "end subroutine versionNumber" >> $(SRCDIR)versionNumber.auto.f90
-	$(FC) $(FCFLAGS) $(SRCDIR)versionNumber.auto.f90 -o $(OBJDIR)versionNumber.auto.o #otherwise error on first make run!
+#$(OBJDIR)versionNumber.auto.o: .git/HEAD .git/index
+#	echo "!edit in makefile only!" > $(SRCDIR)versionNumber.auto.f90
+#	echo "subroutine versionNumber(gitVersion,gitHash)" >> $(SRCDIR)versionNumber.auto.f90
+#	echo "implicit none" >> $(SRCDIR)versionNumber.auto.f90
+#	echo "character(40), intent(out) ::gitVersion,gitHash" >> $(SRCDIR)versionNumber.auto.f90
+#	echo "gitVersion = '$(gitVersion)'" >> $(SRCDIR)versionNumber.auto.f90
+#	echo "gitHash = '$(gitHash)'" >> $(SRCDIR)versionNumber.auto.f90
+#	echo "return" >> $(SRCDIR)versionNumber.auto.f90
+#	echo "end subroutine versionNumber" >> $(SRCDIR)versionNumber.auto.f90
+#	$(FC) $(FCFLAGS) $(SRCDIR)versionNumber.auto.f90 -o $(OBJDIR)versionNumber.auto.o #otherwise error on first make run!
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)

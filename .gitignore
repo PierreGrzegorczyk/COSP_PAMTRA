@@ -68,4 +68,4 @@ driver/data/inputs/UKMO/*_global.nc
 driver/data/outputs/UKMO/*kgo.v*.nc
 driver/data/outputs/UKMO/*.nc
 driver/data/outputs/UKMO/*.png
-
+output/

@@ -39,8 +39,7 @@ pres=nc_data.variables["pres"][:].reshape(npoint,npres)
 pres=pres.T
 
 # Input variables needed for cosp
-var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","vitw",'time_counter'] #don't forget pres
-
+var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
 
 
 for var in var_list:
@@ -172,14 +171,23 @@ create_var("rh", "f4", ("level", "point"),rhl)
 #tke
 create_var("tke", "f4", ("level", "point"),tke)
 
+#tke
+create_var("tke_dissip", "f4", ("level", "point"),tke_dissip) 
+
+
 #vertical wind speed
 create_var("vitw", "f4", ("level", "point"),vitw)
+
+#horizontal wind speed
+create_var("vitu", "f4", ("level", "point"),vitu)
+create_var("vitv", "f4", ("level", "point"),vitv)
 
 # cloud fraction
 
 create_var("tca", "f4", ("level", "point"),rneb)
 create_var("cca", "f4", ("level", "point"),np.zeros(np.shape(rneb))) #convective variable which needs to be set to 0
 create_var("precip_frac", "f4", ("level","point"), pfraclr+pfracld) #in cloud + clear sky precipitation fraction from the new physics
+create_var("precip_fracclr", "f4", ("level","point"), pfraclr) #in cloud + clear sky precipitation fraction from the new physics
 
 # === 4. CLOUD WATER & ICE CONTENTS ===
 

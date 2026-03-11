@@ -2,7 +2,7 @@ echo "_________________________________________________"
 echo "LOAD config.yaml : "
 echo "important parameters as input"
 echo "_________________________________________________"
-python3 config_init.py
+python3 my_config_init.py
 
 
 echo "_________________________________________________"
@@ -32,5 +32,13 @@ echo "_________________________________________________"
 python3 PAMTRA_lmdz.py 
 #python3 PAMTRA/PAMTRA_lmdz_Awaca.py
 
+echo "_________________________________________________"
+echo "POST-TREATMENT NEEDED ?"
+python3 Post_treatment_PAMTRA.py
+echo "_________________________________________________"
 
 
+echo "_________________________________________________"
+echo "End of computation !!!"
+echo "See the .nc in output repository"
+echo "_________________________________________________"

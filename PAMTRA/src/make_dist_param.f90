@@ -326,6 +326,7 @@ subroutine make_dist_params(errorstatus)
            endif
         endif
      endif
+     !print *, 'alpha,lambda=', a_ms,lambda,n_0,n_tot
      ! ! Ryan (2000 JAS) Lambda = Lambda(layer_t)
      if (trim(dist_name) == 'exp_ryan') then
         lambda = 1220._dbl * 10._dbl**(-0.0245_dbl * (273.15_dbl-layer_t))
@@ -366,6 +367,7 @@ subroutine make_dist_params(errorstatus)
         n_0 = MAX(n_0,1e6)
         lambda = (a_ms * n_0 * gamma(b_ms+1._dbl) / q_h)**(1._dbl /(b_ms+1._dbl))
      endif
+     !print *, 'cosmo_snow:alpha,lambda=', a_ms,lambda,n_0,n_tot
      ! ! Check that the variables have been filled in
      if ((gam /= 1._dbl) .or. (mu /= 0._dbl) .or. (n_0 <= 0._dbl) .or. (lambda <= 0._dbl)) then
         print*, gam, mu, n_0, lambda
@@ -446,7 +448,6 @@ subroutine make_dist_params(errorstatus)
      endif
      mu  = p_3
      gam = p_4
-     ! ! fixed n_tot (via p_1)
      if ((p_1 /= -99.) .and. (p_2 == -99.)) then
         if (moment_in == 3)  then
            work2 = gamma((mu + b_ms + 1._dbl) / gam)
@@ -471,6 +472,7 @@ subroutine make_dist_params(errorstatus)
            work1 = q_h * gam / a_ms
            work2 = (mu + b_ms + 1._dbl) / gam
            n_0 = work1 * lambda**work2 / gamma(work2)
+        print *, 'mu,gam', mu, gam, moment_in,work1,work2,work3,n_0
         endif
         if (moment_in == 1)  then
            work1 = gamma((mu + 4._dbl) / gam)
@@ -480,6 +482,7 @@ subroutine make_dist_params(errorstatus)
            n_0 = n_tot * gam * lambda**work1 / gamma(work1)
         endif
      endif
+     ! ! fixed n_tot (via p_1)
      ! ! MESO-NH distribution
      ! Ntot = C * lambda^x
      ! C = p_1 and x = p_2

@@ -204,6 +204,7 @@ subroutine make_dist(errorstatus)
           (trim(dist_name) == 'exp_ryan') .or. (trim(dist_name) == 'mgamma_MNH') ) then
         do i=1,nbin_work+1
            f_ds_work(i) = n_0 * d_bound_ds_work(i)**mu * EXP(-lambda * d_bound_ds_work(i)**gam)
+           !print *, 'distrib',',', i,',',lambda,',',d_bound_ds_work(i),',',f_ds_work(i)
         enddo
 
      else if ((trim(dist_name) /= 'mono')  .and. (trim(dist_name) /= 'mono_cosmo_ice') .and. &

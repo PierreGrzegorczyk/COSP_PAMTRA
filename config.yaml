@@ -3,7 +3,8 @@
 # ==================================================
 # Path to the 1D LMDZ NetCDF file used as input.
 
-LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v5/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
+LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
+#LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v5/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsDC.nc'
 #LMDZ_output1D: '/home/grzegorc/NAWDIC/curtain_lmdz.nc'
 
 # ==================================================
@@ -13,7 +14,8 @@ LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v5/TEST-amip-ERA5-LAM.
 # nsubcol : number of subcolumns used by COSP
 # nz      : number of vertical levels
 
-npoint: 672
+#npoint: 672
+npoint: 2016 
 nsubcol: 30
 nz: 95
 
@@ -25,21 +27,39 @@ FOUTPUTcosp: '../data/my_outputs/Output_COSP.nc'
 # PAMTRA Parameters
 # ==================================================
 
+Where_is_radar: 'Ground' #Ground,Aicraft, Sat
+
+# ##### For ground based radar 
+Altitude_obs: 0.
+
+# ##### For Sat 
+Altitude_sat: 390000
+
+# ##### for aircraft
+Aircraft_alt_file: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/Flight_altitude.nc'
+Pointing: "up" #up,down,both
+
+PamtraVerbose: 0
 # isel and jsel define a subset of points to process.
 # Allows you to run the simulator for a part of the dataset.
 # This is especially useful when npoint is large: 
 
-isel: 288 # starting index of the selection: should be smaller than jsel
-jsel: 576 # ending index of the selection: should be smaller than npoint 
+isel: 1220 #864 #288 starting index of the selection: should be smaller than jsel
+jsel: 1230 #1728 #576 ending index of the selection: should be smaller than npoint 
 
 
 ### Radar configuration
-Radar_type: "'BASTA'" #MRR, STXPOL, BASTA, MIRA35C
+Scattering: 'Ori2021_mix_column_dendrites' #Ice particle type for SSRGA: 
+#Scattering names: Ori2021_mix_column_dendrites,Ori2021_rimed_aggregate_dendrites,Hogan2017_v1_aggregate_bullet_rosettes,Hogan2017_v2_aggregate_bullet_rosettes
+Radar_type: 'BASTA' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C
+
+### Pamtra running parameters
 Run_pamtra: True      # If False, PAMTRA execution is skipped: useful for debugging
 Run_parall: True      # Enable parallel processing (faster execution), necessary for doppler spectra
-Run_spectra: True    # Compute Doppler spectra (increases runtime)
-Write_output: FALSE    # Write PAMTRA results in an output file
+Run_spectra: True    # Compute Doppler spectra (increases a lot the computation time)
+Write_output: True   # Write or not .nc output
+
 
   #FOUTPUTpamtra: "../Ouput_golden_case_D17_MIRAv6_ssrga_spectra_Ka.nc"
-FOUTPUTpamtra: "../MIRA_D17.nc"
+FOUTPUTpamtra: "../output/BASTA_D17_v8_test_ground.nc"
 #FOUTPUTpamtra: "../NAWDIC.nc"

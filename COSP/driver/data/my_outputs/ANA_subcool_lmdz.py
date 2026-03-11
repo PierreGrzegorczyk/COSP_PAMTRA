@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 ## Output from cosp
-nc_out = "C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz_hillman\\driver\\data\\my_outputs\\Output.nc"
+nc_out = "/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs/Output_COSP.nc"
 nc_out = Dataset(nc_out, "r")
 z=np.array(nc_out.variables['lev'][:])/1000
 
@@ -26,7 +26,7 @@ z=np.array(nc_out.variables['lev'][:])/1000
 nb_subcol=100
 subcol_grid=1+np.arange(0,100,1)
 ## Cloud
-path="C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz_hillman\\driver\\data\\my_outputs\\"
+path="/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs"
 # path="C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz_hillman\\driver\\data\\my_outputs\\Most_cloud_and_variability_nsamples1000\\"
 # path="C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz\\driver\\data\\my_outputs\\old_outputs\\"
 
@@ -124,8 +124,8 @@ plt.savefig(path+"Precip_fraction_test_profiles.png",dpi=600)
 
 ## Full read of subcols
 
-path="C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz_hillman\\driver\\run"
-nc_file = path+"\\hydro_output.nc"
+path="/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs"
+nc_file = path+"/COSP_to_PAMTRA.nc"
 nc_data = Dataset(nc_file, "r")
 
 Qi=nc_data['I_LSCICE'][:]
@@ -133,6 +133,41 @@ Ql=nc_data['I_LSCLIQ'][:]
 Qr=nc_data['I_LSRAIN'][:]
 Qs=nc_data['I_LSSNOW'][:]
 
-plt.figure('test')
-plt.imshow(np.mean(Qi[:,:,:]*1000,1))
+
+id=580
+x=np.arange(0,30,1)
+
+plt.figure('test',figsize=(10,4))
+
+plt.subplot(131)
+plt.title('Ice')
+plt.pcolormesh(x,z,Qi[:,:,id]*1000)
+plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+plt.xlabel('Subcolumn number')
+plt.ylabel('Altitude (km)')
+plt.ylim(0,8)
+
+Qs_no_correction=np.zeros(np.shape(Qs[:,:,id]))
+for i in range(0,30,1):
+    Qs_no_correction[:,i]=np.mean(Qs[:,:,id],1)
+
+plt.subplot(132)
+plt.title('Snow (no correction)')
+plt.pcolormesh(x,z,Qs_no_correction[:,:]*1000)
+plt.xlabel('Subcolumn number')
+plt.ylabel('Altitude (km)')
+plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+plt.ylim(0,8)
+plt.tight_layout()
+
+
+plt.subplot(133)
+plt.title('Snow (Hillman correction)')
+plt.pcolormesh(x,z,Qs[:,:,id]*1000)
+plt.xlabel('Subcolumn number')
+plt.ylabel('Altitude (km)')
+plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+plt.ylim(0,8)
+plt.tight_layout()
+plt.savefig(path+'Precip_subcol_example.png',dpi=600)
 plt.show()
