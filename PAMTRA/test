@@ -1,0 +1,1350 @@
+Show Qs
+<pyPamtra.descriptorFile.pamDescriptorFile object at 0x773c65f967d0>
+pam nml {'hydro_threshold': 1e-10, 'write_nc': True, 'data_path': '$PAMTRA_DATADIR', 'save_psd': False, 'save_ssp': False, 'add_obs_height_to_layer': False, 'conserve_mass_rescale_dsd': False, 'outpol': 'VH', 'file_desc': '', 'creator': 'Pamtrauser', 'active': True, 'passive': False, 'radar_mode': 'spectrum', 'randomseed': 10, 'emissivity': 0.6, 'lgas_extinction': True, 'gas_mod': 'R98', 'lhyd_absorption': True, 'lhyd_scattering': True, 'lhyd_emission': True, 'liq_mod': 'TKC', 'hydro_includehydroinrhoair': True, 'hydro_fullspec': False, 'hydro_limit_density_area': True, 'hydro_softsphere_min_density': 10.0, 'hydro_adaptive_grid': False, 'tmatrix_db': 'none', 'tmatrix_db_path': 'database/', 'radar_nfft': 512, 'radar_no_ave': 150, 'radar_max_v': 10.0, 'radar_min_v': -10.0, 'radar_pnoise0': np.float64(-16.989700043360187), 'radar_allow_negative_dD_dU': False, 'radar_airmotion': True, 'radar_airmotion_model': 'constant', 'radar_airmotion_vmin': -4.0, 'radar_airmotion_vmax': 4.0, 'radar_airmotion_linear_steps': 30, 'radar_airmotion_step_vmin': 0.5, 'radar_peak_min_bins': 2, 'radar_aliasing_nyquist_interv': 1, 'radar_save_noise_corrected_spectra': False, 'radar_use_hildebrand': True, 'radar_peak_snr_definition': 'log', 'radar_peak_min_snr': -10, 'radar_convolution_fft': True, 'radar_smooth_spectrum': True, 'radar_k2': 0.93, 'radar_npeaks': 1, 'radar_noise_distance_factor': -2, 'radar_receiver_uncertainty_std': 0.0, 'radar_receiver_miscalibration': 0.0, 'radar_attenuation': 'bottom-up', 'radar_polarisation': 'NN', 'radar_use_wider_peak': True, 'radar_integration_time': 9.0, 'radar_fwhr_beamwidth_deg': 0.8, 'liblapack': True}
+Start to run
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:57  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:58  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+ 2026/03/11  19:38:59  warning in module rosen98_gasabs
+     Pressure lower than 10 Pa technically outside rosen98 model validity
+Run end
+Pam.r keys dict_keys(['Ze', 'Att_hydro', 'Att_atmo', 'radar_hgt', 'radar_spectra', 'radar_snr', 'radar_moments', 'radar_slopes', 'radar_edges', 'radar_quality', 'radar_vel', 'tb', 'emissivity', 'psd_area', 'psd_n', 'psd_d', 'psd_mass', 'psd_bscat', 'kextatmo', 'scatter_matrix', 'extinct_matrix', 'emission_vector', 'radar_pol', 'att_pol', 'pamtraVersion', 'pamtraHash', 'angles_deg', 'nmlSettings'])

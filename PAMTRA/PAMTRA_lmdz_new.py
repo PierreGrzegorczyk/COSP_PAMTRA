@@ -10,17 +10,17 @@ from netCDF4 import Dataset
 
 #________Switch on different options
 
-Radar_type='{Radar_type}'
+Radar_type='BASTA'
 
-Run_pamtra={Run_pamtra}
+Run_pamtra=True
 
-Run_parall={Run_parall}
+Run_parall=True
 
-Run_spectra={Run_spectra}
+Run_spectra=True
 
-Write_output={Write_output}
+Write_output=False#True
 
-Scattering='{Scattering}'
+Scattering='Ori2021_mix_column_dendrites'
 #_________LMDZ data___________________
 nc_file = '../Cosp_input_from_LMDZ.nc'
 nc_data = Dataset(nc_file, "r")
@@ -92,9 +92,10 @@ D_ice_bins_center=np.linspace(dD_ice/2,r_ice_max-dD_ice/2,Nbin_ice)
 q_hydro=np.zeros(np.shape(T))
 q_hydro=np.repeat(q_hydro[:,:,:,np.newaxis],3+Nbin_ice, axis=3)
 
-q_hydro[:,:,:,id_liq]=Ql
-q_hydro[:,:,:,id_rain]=Qr
-q_hydro[:,:,:,id_snow]=Qs
+q_hydro[:,:,:,id_liq]=0.#Ql
+q_hydro[:,:,:,id_rain]=0.#Qr
+q_hydro[:,:,:,id_snow]=0.#Qs
+
 
 #________load PAMTRA______________
 imp.reload(pyPamtra)
@@ -104,8 +105,8 @@ pam = pyPamtra.pyPamtra()
 pamData = dict()
 
 #Index for data selection
-jsel={jsel}
-isel={isel}
+jsel=1230
+isel=1220
 
 #________________Quicklook for data before running__________________
 plt.figure('Qs quicklook')
@@ -157,6 +158,8 @@ if Scattering=='Hogan2017_v2_aggregate_bullet_rosettes':
     AR_snow=0.82
     ssrg_coefs = [0.16,0.15,2.33,0.22]
 
+
+
 #________hydrometeor input________
 ##___Liq_properties
 
@@ -181,8 +184,7 @@ N_snow=(q_hydro[isel:jsel,:,:,id_snow]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.
 
 pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_snow,-99.0,"ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs),"lmdz_snow",0.))
 
-
-print("pam.df",pam.df)
+print(pam.df)
 ##___Ice_properties___
 
 Rho_ice=917.
@@ -204,7 +206,7 @@ for i in range(len(D_ice_bins_center)):
     pam.df.addHydrometeor(("ice"+str(D_ice_bins_center[i]), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "ss-rayleigh-gans", "heymsfield10_particles",0.))
 
 
-# Data input
+# Data input 
 pamData["lon"] = lon[isel:jsel,:]
 pamData["lat"] = lat[isel:jsel,:]
 pamData["temp"] = T[isel:jsel,:,:]
@@ -218,6 +220,7 @@ pamData["wind_w"] =-w[isel:jsel,:,:]#/T[isel:jsel,:,:]*0.1
 pamData["wind_uv"] = (u[isel:jsel,:,:]**2+v[isel:jsel,:,:]**2)**0.5#/T[isel:jsel,:,:]*0.1
 
 pam.createProfile(**pamData)
+
 
 #______Different radar characteristics______
 
@@ -271,24 +274,24 @@ if Radar_type=='STXPOL':
 
 #__________namelist___________
 
-if "{Where_is_radar}"=="Ground":
+if "Ground"=="Ground":
     pam.nmlSet['radar_attenuation']='bottom-up'
-    pam.p['obs_height'][:,1] = {Altitude_obs}
+    pam.p['obs_height'][:,1] = 0.0
 
-if "{Where_is_radar}"=="Sat":
+if "Ground"=="Sat":
     pam.nmlSet['radar_attenuation']='top-down'
-    pam.p['obs_height'][:,0] = {Altitude_sat}
+    pam.p['obs_height'][:,0] = 390000
 
-if "{Where_is_radar}"=="Aircraft":
-    nc_aircraft = Dataset("{Aircraft_alt_file}", "r")
+if "Ground"=="Aircraft":
+    nc_aircraft = Dataset("/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/Flight_altitude.nc", "r")
     
-    if '{Pointing}'=='down' or '{Pointing}'=='both':
+    if 'up'=='down' or 'up'=='both':
         pam.nmlSet['radar_attenuation']='top-down'
-        pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
+        pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#0.0
 
-    elif '{Pointing}'=='up':
+    elif 'up'=='up':
         pam.nmlSet['radar_attenuation']='bottom-up'
-        pam.p['obs_height'][:,:,1] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
+        pam.p['obs_height'][:,:,1] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#0.0
 
     
     print("pam.p['obs_height']",pam.p['obs_height'][:,:,:])
@@ -325,7 +328,7 @@ if Run_spectra==True:
 #pam.nmlSet["radar_noise_distance_factor"] = 0.#-2
 #pam.nmlSet["save_psd"] = True
 
-pam.set["pyVerbose"] = {PamtraVerbose}
+pam.set["pyVerbose"] = 0
 
 print("pam nml",pam.nmlSet)
 if Run_pamtra==True:
@@ -427,7 +430,7 @@ if Run_pamtra==True:
 
 # Output NetCDF file path
 #output_file = "../Ouput_golden_case_D17_v6_ssrga_spectra_Ka.nc"
-output_file = "{FOUTPUTpamtra}"#../Ouput_golden_case_D17_v6_ssrga_spectra_Ka.nc"
+output_file = "../output/BASTA_D17_v8_test_ground.nc"#../Ouput_golden_case_D17_v6_ssrga_spectra_Ka.nc"
 
 if Write_output==True:
     with Dataset(output_file, "w", format="NETCDF4") as nc_out:
@@ -471,9 +474,9 @@ if Write_output==True:
 # ##################### 2nd run only for Radar onboard aicraft which is pointing both up and down #################
 # upward pointing 
 
-if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
+if "Ground"=="Aircraft" and "up"=='both':
     pam.nmlSet['radar_attenuation']='bottom-up'
-    pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
+    pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#0.0
     nc_aircraft.close()
     print("pam 2nd nml",pam.nmlSet)
     if Run_pamtra==True:

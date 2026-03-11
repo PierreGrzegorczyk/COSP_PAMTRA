@@ -57,7 +57,7 @@ Radar_type: 'BASTA' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C
 Run_pamtra: True      # If False, PAMTRA execution is skipped: useful for debugging
 Run_parall: True      # Enable parallel processing (faster execution), necessary for doppler spectra
 Run_spectra: True    # Compute Doppler spectra (increases a lot the computation time)
-Write_output: True   # Write or not .nc output
+Write_output: False #True   # Write or not .nc output
 
 
   #FOUTPUTpamtra: "../Ouput_golden_case_D17_MIRAv6_ssrga_spectra_Ka.nc"

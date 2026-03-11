@@ -8,7 +8,7 @@ jsel=1230
 
 Run_pamtra=True
 Run_spectra=True
-Write_output=True
+Write_output=False
 
 output_file = "../output/BASTA_D17_v8_test_ground.nc"
 output_file2 = output_file[:-3]+"_upward_part.nc"
