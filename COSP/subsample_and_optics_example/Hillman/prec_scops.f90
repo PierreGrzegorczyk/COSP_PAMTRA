@@ -57,7 +57,6 @@
       INTEGER flag_ls, flag_cv
       INTEGER frac_out_ls(npoints,ncol),frac_out_cv(npoints,ncol) !flag variables for 
                        ! stratiform cloud and convective cloud in the vertical column
-
       cv_col = 0.05*ncol
       if (cv_col .eq. 0) cv_col=1
  

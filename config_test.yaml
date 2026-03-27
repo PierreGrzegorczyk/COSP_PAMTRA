@@ -3,9 +3,10 @@
 # ==================================================
 # Path to the 1D LMDZ NetCDF file used as input.
 
-LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v9/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
-#LMDZ_output1D: '/home/grzegorc/AWACA/EARTHCARE/LMDZ_traj1.nc'
-blowing_snow: True #False
+LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
+#LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v5/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsDC.nc'
+#LMDZ_output1D: '/home/grzegorc/NAWDIC/curtain_lmdz.nc'
+
 # ==================================================
 # COSP Parameters
 # ==================================================
@@ -14,13 +15,14 @@ blowing_snow: True #False
 # nz      : number of vertical levels
 
 #npoint: 672
-npoint: 2016 
-nsubcol: 30
+npoint: 1 ##016 
+nsubcol: 100
 nz: 95
 
 # Output NetCDF file produced by COSP
 # (An additional COSP output file is generated internally and later read by PAMTRA.)
 FOUTPUTcosp: '../data/my_outputs/Output_COSP.nc'
+
 # ==================================================
 # PAMTRA Parameters
 # ==================================================
@@ -31,39 +33,38 @@ Where_is_radar: 'Ground' #Ground,Aicraft, Sat
 Altitude_obs: 0.
 
 # ##### For Sat 
-Altitude_sat: 390000 #Earthcare
+Altitude_sat: 390000
 
 # ##### for aircraft
 Aircraft_alt_file: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/Flight_altitude.nc'
 Pointing: "up" #up,down,both
 
 PamtraVerbose: 1
-pp_deltaX: 4    #4 profiles in X per worker
-pp_deltaY: 2    #2 profile in Y per worker
-
-  
-  
 # isel and jsel define a subset of points to process.
 # Allows you to run the simulator for a part of the dataset.
 # This is especially useful when npoint is large: 
 
-isel: 864 #1114 #288 starting index of the selection: should be smaller than jsel
-jsel: 1728 #134 #576 ending index of the selection: should be smaller than npoint 
+isel: 0 #1114 #288 starting index of the selection: should be smaller than jsel
+jsel: 1 #134 #576 ending index of the selection: should be smaller than npoint 
+
 
 ### Radar configuration
 Scattering: 'Ori2021_mix_column_dendrites' #Ice particle type for SSRGA: 
 #Scattering: 'Ori2021_rimed_aggregate_dendrites' #Ice particle type for SSRGA: 
 #Scattering names: Ori2021_mix_column_dendrites,Ori2021_rimed_aggregate_dendrites,Hogan2017_v1_aggregate_bullet_rosettes,Hogan2017_v2_aggregate_bullet_rosettes
-Radar_type: 'MIRA35C' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C; EarthCARE_cpr 
-adjust_noise: False  #if you want another noise level that the one set to the instrument inside PAMTRA python script
-Ze_noise_1km: -200
+Radar_type: 'MIRA35C' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C
+adjust_noise: True
+Ze_noise_1km: -200 
 
 
 ### Pamtra running parameters
 Run_pamtra: True      # If False, PAMTRA execution is skipped: useful for debugging
-Run_parall: True      # Enable parallel processing (faster execution), necessary for doppler spectra
-Run_spectra: True #True #True    # Compute Doppler spectra (increases a lot the computation time)
+Run_parall: False      # Enable parallel processing (faster execution), necessary for doppler spectra
+Run_spectra: False #True    # Compute Doppler spectra (increases a lot the computation time)
 Write_output: True #True #True   # Write or not .nc output
 
 
-FOUTPUTpamtra: "../output/MIRA35C_D17_v9.nc"
+  #FOUTPUTpamtra: "../Ouput_golden_case_D17_MIRAv6_ssrga_spectra_Ka.nc"
+FOUTPUTpamtra: "../output/Prof_sensi_100_Ray_Mira.nc"
+
+#FOUTPUTpamtra: "../NAWDIC.nc"

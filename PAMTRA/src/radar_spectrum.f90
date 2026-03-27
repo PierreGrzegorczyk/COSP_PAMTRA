@@ -189,6 +189,9 @@ subroutine radar_spectrum(&
         else if (vel_size_mod .eq. "lmdz_snow") then
           call dia2vel_lmdz_snow(err,nbins,vel_spec,diameter_spec_cp)
 
+        else if (vel_size_mod .eq. "lmdz_bs") then
+          call dia2vel_lmdz_bs(err,nbins,vel_spec,diameter_spec_cp)
+
         else if (vel_size_mod .eq. "lmdz_rain") then
           call dia2vel_lmdz_rain(err,nbins,vel_spec,diameter_spec_cp)
 !_______________________________________________

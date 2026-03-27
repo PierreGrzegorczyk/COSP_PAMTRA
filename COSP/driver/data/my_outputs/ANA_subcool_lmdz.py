@@ -26,7 +26,8 @@ z=np.array(nc_out.variables['lev'][:])/1000
 nb_subcol=100
 subcol_grid=1+np.arange(0,100,1)
 ## Cloud
-path="/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs"
+path="/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs/"
+path="/home/grzegorc/AWACA/COSP/COSPv2.0_lmdz/driver/data/my_outputs/"
 # path="C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz_hillman\\driver\\data\\my_outputs\\Most_cloud_and_variability_nsamples1000\\"
 # path="C:\\Users\\grzegorczyk\\AWACA\\COSP\\COSPv2.0_lmdz\\driver\\data\\my_outputs\\old_outputs\\"
 
@@ -134,8 +135,8 @@ Qr=nc_data['I_LSRAIN'][:]
 Qs=nc_data['I_LSSNOW'][:]
 
 
-id=580
-x=np.arange(0,30,1)
+id=0
+x=np.arange(0,100,1)
 
 plt.figure('test',figsize=(10,4))
 

@@ -1320,11 +1320,11 @@ contains
          sd              !
 
    ! SINGLE MOMENT PARAMETERS
-   integer,parameter,dimension(N_HYDRO) :: &
+   integer,parameter,dimension(N_HYDRO-1) :: &
                     ! LSL  LSI  LSR  LSS  CVL  CVI  CVR  CVS  LSG    
        HCLASS1_TYPE  = (/5,   1,   2,   2,   5,   1,   2,   2,   2/), & ! 
        HCLASS1_PHASE = (/0,   1,   0,   1,   0,   1,   0,   1,   1/)    ! 
-   real(wp),parameter,dimension(N_HYDRO) ::&
+   real(wp),parameter,dimension(N_HYDRO-1) ::&
                       ! LSL   LSI    LSR    LSS    CVL   CVI    CVR    CVS    LSG    
        HCLASS1_DMIN = (/ -1.,  -1.,   -1.,   -1.,   -1.,  -1.,   -1.,   -1.,   -1.  /),  &
        HCLASS1_DMAX = (/ -1.,  -1.,   -1.,   -1.,   -1.,  -1.,   -1.,   -1.,   -1.  /),  &
@@ -1336,12 +1336,12 @@ contains
        HCLASS1_P3   = (/  0.3,  2.,   -1.,   -1.,    0.3,  2.,   -1.,   -1.,   -1.   /)
 
     ! TWO MOMENT PARAMETERS
-    integer,parameter,dimension(N_HYDRO) :: &
+    integer,parameter,dimension(N_HYDRO-1) :: &
                       ! LSL  LSI  LSR  LSS  CVL  CVI  CVR  CVS  LSG
        HCLASS2_TYPE  = (/ 1,   1,   1,   1,   1,   1,   1,   1,   1/), &
        HCLASS2_PHASE = (/ 0,   1,   0,   1,   0,   1,   0,   1,   1/)
 
-    real(wp),parameter,dimension(N_HYDRO) :: &
+    real(wp),parameter,dimension(N_HYDRO-1) :: &
                       ! LSL    LSI      LSR     LSS   CVL    CVI   CVR     CVS    LSG
        HCLASS2_DMIN = (/ -1,     -1,     -1,     -1,    -1,    -1,   -1,     -1,   -1/), &
        HCLASS2_DMAX = (/ -1,     -1,     -1,     -1,    -1,    -1,   -1,     -1,   -1/), &        
@@ -1353,28 +1353,28 @@ contains
        HCLASS2_P3   = (/ -2,      1,      1,      1,    -2,     1,    1,      1,    1/) 
     
     if (lsingle) then    
-       sd%dtype(1:N_HYDRO) = HCLASS1_TYPE(1:N_HYDRO)
-       sd%phase(1:N_HYDRO) = HCLASS1_PHASE(1:N_HYDRO)
-       sd%dmin(1:N_HYDRO)  = HCLASS1_DMIN(1:N_HYDRO)
-       sd%dmax(1:N_HYDRO)  = HCLASS1_DMAX(1:N_HYDRO)
-       sd%apm(1:N_HYDRO)   = HCLASS1_APM(1:N_HYDRO)
-       sd%bpm(1:N_HYDRO)   = HCLASS1_BPM(1:N_HYDRO)
-       sd%rho(1:N_HYDRO)   = HCLASS1_RHO(1:N_HYDRO)
-       sd%p1(1:N_HYDRO)    = HCLASS1_P1(1:N_HYDRO)
-       sd%p2(1:N_HYDRO)    = HCLASS1_P2(1:N_HYDRO)
-       sd%p3(1:N_HYDRO)    = HCLASS1_P3(1:N_HYDRO)
+       sd%dtype(1:N_HYDRO-1) = HCLASS1_TYPE(1:N_HYDRO-1)
+       sd%phase(1:N_HYDRO-1) = HCLASS1_PHASE(1:N_HYDRO-1)
+       sd%dmin(1:N_HYDRO-1)  = HCLASS1_DMIN(1:N_HYDRO-1)
+       sd%dmax(1:N_HYDRO-1)  = HCLASS1_DMAX(1:N_HYDRO-1)
+       sd%apm(1:N_HYDRO-1)   = HCLASS1_APM(1:N_HYDRO-1)
+       sd%bpm(1:N_HYDRO-1)   = HCLASS1_BPM(1:N_HYDRO-1)
+       sd%rho(1:N_HYDRO-1)   = HCLASS1_RHO(1:N_HYDRO-1)
+       sd%p1(1:N_HYDRO-1)    = HCLASS1_P1(1:N_HYDRO-1)
+       sd%p2(1:N_HYDRO-1)    = HCLASS1_P2(1:N_HYDRO-1)
+       sd%p3(1:N_HYDRO-1)    = HCLASS1_P3(1:N_HYDRO-1)
     endif
     if (ldouble) then    
-       sd%dtype(1:N_HYDRO) = HCLASS2_TYPE(1:N_HYDRO)
-       sd%phase(1:N_HYDRO) = HCLASS2_PHASE(1:N_HYDRO)
-       sd%dmin(1:N_HYDRO)  = HCLASS2_DMIN(1:N_HYDRO)
-       sd%dmax(1:N_HYDRO)  = HCLASS2_DMAX(1:N_HYDRO)
-       sd%apm(1:N_HYDRO)   = HCLASS2_APM(1:N_HYDRO)
-       sd%bpm(1:N_HYDRO)   = HCLASS2_BPM(1:N_HYDRO)
-       sd%rho(1:N_HYDRO)   = HCLASS2_RHO(1:N_HYDRO)
-       sd%p1(1:N_HYDRO)    = HCLASS2_P1(1:N_HYDRO)
-       sd%p2(1:N_HYDRO)    = HCLASS2_P2(1:N_HYDRO)
-       sd%p3(1:N_HYDRO)    = HCLASS2_P3(1:N_HYDRO)
+       sd%dtype(1:N_HYDRO-1) = HCLASS2_TYPE(1:N_HYDRO-1)
+       sd%phase(1:N_HYDRO-1) = HCLASS2_PHASE(1:N_HYDRO-1)
+       sd%dmin(1:N_HYDRO-1)  = HCLASS2_DMIN(1:N_HYDRO-1)
+       sd%dmax(1:N_HYDRO-1)  = HCLASS2_DMAX(1:N_HYDRO-1)
+       sd%apm(1:N_HYDRO-1)   = HCLASS2_APM(1:N_HYDRO-1)
+       sd%bpm(1:N_HYDRO-1)   = HCLASS2_BPM(1:N_HYDRO-1)
+       sd%rho(1:N_HYDRO-1)   = HCLASS2_RHO(1:N_HYDRO-1)
+       sd%p1(1:N_HYDRO-1)    = HCLASS2_P1(1:N_HYDRO-1)
+       sd%p2(1:N_HYDRO-1)    = HCLASS2_P2(1:N_HYDRO-1)
+       sd%p3(1:N_HYDRO-1)    = HCLASS2_P3(1:N_HYDRO-1)
     endif    
   end subroutine hydro_class_init    
 end module mod_quickbeam_optics

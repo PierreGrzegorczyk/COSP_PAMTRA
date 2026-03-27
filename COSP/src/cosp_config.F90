@@ -62,7 +62,7 @@ MODULE MOD_COSP_CONFIG
          use_vgrid                 ! True=Use new grid for L3 CLOUDAT and CALIPSO
     integer,parameter ::   &
          SR_BINS = 15,           & ! Number of bins (backscattering coefficient) in CALOPSO LIDAR simulator.
-         N_HYDRO = 9               ! Number of hydrometeor classes used by quickbeam radar simulator.
+         N_HYDRO = 10               ! Number of hydrometeor classes used by quickbeam radar simulator.
 
     ! ####################################################################################  
     ! Joint histogram bin-boundaries

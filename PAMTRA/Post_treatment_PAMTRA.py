@@ -3,14 +3,14 @@ import matplotlib.pylab as plt
 import numpy as np
 
 ## config parameters
-isel=1220
-jsel=1230
+isel=864
+jsel=1728
 
 Run_pamtra=True
 Run_spectra=True
-Write_output=False
+Write_output=True
 
-output_file = "../output/BASTA_D17_v8_test_ground.nc"
+output_file = "../output/MIRA35C_D17_v9.nc"
 output_file2 = output_file[:-3]+"_upward_part.nc"
 
 if "Ground"=="Aircraft" and "up"=='both' and Write_output==True:

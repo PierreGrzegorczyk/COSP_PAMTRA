@@ -20,6 +20,8 @@ Run_spectra={Run_spectra}
 
 Write_output={Write_output}
 
+ok_bs={blowing_snow}
+
 Scattering='{Scattering}'
 #_________LMDZ data___________________
 nc_file = '../Cosp_input_from_LMDZ.nc'
@@ -48,11 +50,12 @@ Qi=nc_data['I_LSCICE'][:][::-1,:,:]
 Ql=nc_data['I_LSCLIQ'][:][::-1,:,:]
 Qr=nc_data['I_LSRAIN'][:][::-1,:,:]
 Qs=nc_data['I_LSSNOW'][:][::-1,:,:]
-
+Qbs=nc_data['I_BS'][:][::-1,:,:]
 ncol=np.shape(Qs)[1]
     
 Qi=np.transpose(Qi, (2, 1, 0))
 Qs=np.transpose(Qs, (2, 1, 0))
+Qbs=np.transpose(Qbs, (2, 1, 0))
 Qr=np.transpose(Qr, (2, 1, 0))
 Ql=np.transpose(Ql, (2, 1, 0))
 
@@ -78,10 +81,11 @@ w=w/Rho_air/9.81
 id_liq=0
 id_rain=1
 id_snow=2
+id_bs=3
 
 ## Define bins ofr the ice particles
 
-Nbin_ice=16
+Nbin_ice=12
 r_ice_max=160
 
 D_ice_bins_bounds=np.linspace(0,r_ice_max,Nbin_ice+1)
@@ -90,11 +94,12 @@ D_ice_bins_center=np.linspace(dD_ice/2,r_ice_max-dD_ice/2,Nbin_ice)
 
 ## Define array of q_hydro
 q_hydro=np.zeros(np.shape(T))
-q_hydro=np.repeat(q_hydro[:,:,:,np.newaxis],3+Nbin_ice, axis=3)
+q_hydro=np.repeat(q_hydro[:,:,:,np.newaxis],4+Nbin_ice, axis=3)
 
 q_hydro[:,:,:,id_liq]=Ql
 q_hydro[:,:,:,id_rain]=Qr
 q_hydro[:,:,:,id_snow]=Qs
+q_hydro[:,:,:,id_bs]=Qbs
 
 #________load PAMTRA______________
 imp.reload(pyPamtra)
@@ -108,11 +113,18 @@ jsel={jsel}
 isel={isel}
 
 #________________Quicklook for data before running__________________
+
 plt.figure('Qs quicklook')
 plt.imshow(np.mean(Qs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qs[isel:jsel,:,::-1]))
 plt.colorbar()
 print("Show Qs")
+
+plt.figure('Qbs quicklook')
+plt.imshow(np.mean(Qbs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qbs[isel:jsel,:,::-1]))
+plt.colorbar()
+print("Show Qbs")
 plt.show()
+
 
 plt.figure('Profiles for first time index',figsize=(12,8))
 plt.subplot(131)
@@ -150,11 +162,11 @@ if Scattering=='Ori2021_rimed_aggregate_dendrites':
     ssrg_coefs = [0.15,4.98,3.53,0.036]
 
 if Scattering=='Hogan2017_v1_aggregate_bullet_rosettes':
-    AR_snow=0.82
+#    AR_snow=0.82
     ssrg_coefs = [0.09,0.15,2.33,0.22]
 
 if Scattering=='Hogan2017_v2_aggregate_bullet_rosettes':
-    AR_snow=0.82
+#AR_snow=0.82
     ssrg_coefs = [0.16,0.15,2.33,0.22]
 
 #________hydrometeor input________
@@ -179,8 +191,18 @@ snow_fallspeed=1.
 Rho_snow = 1.e3 * 0.178 * ( r_snow * 2 * 1000. )**(-0.922)
 N_snow=(q_hydro[isel:jsel,:,:,id_snow]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
 
+#pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_snow,-99.0,"mie-sphere","lmdz_snow",0.))
 pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_snow,-99.0,"ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs),"lmdz_snow",0.))
 
+
+##___Blowing_snow_properties___
+r_bs=50e-6
+AR_bs=1.
+bs_fallspeed=0.5
+Rho_bs = 917.
+N_bs=(q_hydro[isel:jsel,:,:,id_bs]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
+
+pam.df.addHydrometeor(("bs",AR_bs, -1 , Rho_bs, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_bs,-99.0,"ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs),"lmdz_bs",0.))
 
 print("pam.df",pam.df)
 ##___Ice_properties___
@@ -188,22 +210,22 @@ print("pam.df",pam.df)
 Rho_ice=917.
 AR_ice=1.#
 r_ice=1e-6*(45.8966*(Qi*Rho_air*1e3)**0.2214 + 0.7957*(Qi*Rho_air*1e3)**0.2535*(T - 273.15 + 190.))/2 #as in lmdz physics from Sun and Rikus 1999
-
 N_ice=(Qi[isel:jsel,:,:]*Rho_air[isel:jsel,:,:])/(Rho_ice*4/3*np.pi*r_ice[isel:jsel,:,:]**3)
 
 
 for i in range(len(D_ice_bins_center)):
     Qi_tmp=Qi.copy()
 
-    mask=np.logical_and(2*r_ice*1e6<D_ice_bins_bounds[i+1],2*r_ice*1e6>D_ice_bins_bounds[i])
+    mask=np.logical_and(2*r_ice*1e6<=D_ice_bins_bounds[i+1],2*r_ice*1e6>D_ice_bins_bounds[i])
     Qi_tmp[mask==False]=0.
 
-    id_ice=i+3
+    id_ice=i+4
     q_hydro[:,:,:,id_ice]=Qi_tmp
 
-    pam.df.addHydrometeor(("ice"+str(D_ice_bins_center[i]), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "ss-rayleigh-gans", "heymsfield10_particles",0.))
 
 
+    pam.df.addHydrometeor(("ic"+str(i), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs), "heymsfield10_particles",0.))
+    #pam.df.addHydrometeor(("ice"+str(D_ice_bins_center[i]), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "mie-sphere", "heymsfield10_particles",0.))
 # Data input
 pamData["lon"] = lon[isel:jsel,:]
 pamData["lat"] = lat[isel:jsel,:]
@@ -212,7 +234,6 @@ pamData["relhum"] = RH[isel:jsel,:,:]
 pamData["hgt"] = z[isel:jsel,:,:]
 pamData["press"] = p[isel:jsel,:,:]
 pamData["hydro_q"] = q_hydro[isel:jsel,:,:]
-
 pamData["turb_edr"]=tke_dissip[isel:jsel,:,:]#/T[isel:jsel,:,:]
 pamData["wind_w"] =-w[isel:jsel,:,:]#/T[isel:jsel,:,:]*0.1
 pamData["wind_uv"] = (u[isel:jsel,:,:]**2+v[isel:jsel,:,:]**2)**0.5#/T[isel:jsel,:,:]*0.1
@@ -268,7 +289,17 @@ if Radar_type=='STXPOL':
     time_resolution=0.1
     Noise_factor=-2
 
+if Radar_type=='EarthCARE_cpr':  
+    freq=94.05
+    v_max=10.
+    nfft=512
+    Z_noise=-300.
+    Beam_width=0.095
+    time_resolution=0.67
+    Noise_factor=-2
 
+if {adjust_noise}==True:
+    Z_noise={Ze_noise_1km}
 #__________namelist___________
 
 if "{Where_is_radar}"=="Ground":
@@ -297,7 +328,7 @@ pam.nmlSet["passive"] = False
 pam.nmlSet['radar_integration_time']=time_resolution
 pam.nmlSet["radar_fwhr_beamwidth_deg"] = Beam_width #mira beamwidth
 #pam.nmlSet['radar_pnoise0'] = Z_noise 
-pam.nmlSet["radar_noise_distance_factor"] = Noise_factor #r^k noise increse
+pam.nmlSet["radar_noise_distance_factor"] = Noise_factor 
 pam.nmlSet["randomseed"] = 10
 pam.nmlSet["radar_use_hildebrand"] = True
 
@@ -333,7 +364,7 @@ if Run_pamtra==True:
 
     if Run_parall==True:
         pam.runParallelPamtra(freq,
-                      pp_deltaX=2,    # profiles in X per worker
+                      pp_deltaX=3,    # profiles in X per worker
                       pp_deltaY=2,    # profile in Y per worker
                       pp_deltaF=1,    # frequency per worker
                       pp_local_workers="auto")  # detect CPU cores
@@ -353,9 +384,6 @@ if Run_pamtra==True:
     #print('radar_d', pam.r["psd_d"])
     #print('radar_vel', pam.r["radar_vel"],np.shape(pam.r["radar_vel"][0]),len(pam.r["radar_vel"][0]))
 
-    plt.figure('Snr in subcol 0')
-    plt.imshow(pam.r["radar_snr"][0,:,:,0,0,0].T,vmin=-30,vmax=80,cmap="jet")
-    plt.colorbar()
 
     plt.figure('Quicklook reflectivity in subcol 0')
     plt.pcolormesh(time[isel:jsel],pam.r["radar_hgt"][0,0,:]/1000,pam.r["Ze"][:,0,:,0,0,0].T,vmin=-30,vmax=30,cmap="jet")
@@ -378,6 +406,9 @@ if Run_pamtra==True:
 
     if Run_spectra==True:
         #print('Shape Spectra',np.shape(pam.r["radar_vel"]),np.shape(pam.r["radar_spectra"]))
+        plt.figure('Snr in subcol 0')
+        plt.imshow(pam.r["radar_snr"][0,:,:,0,0,0].T,vmin=-30,vmax=80,cmap="jet")
+        plt.colorbar()
 
         plt.figure('Radar moments',figsize=(8,8))
 
@@ -429,7 +460,7 @@ if Run_pamtra==True:
 #output_file = "../Ouput_golden_case_D17_v6_ssrga_spectra_Ka.nc"
 output_file = "{FOUTPUTpamtra}"#../Ouput_golden_case_D17_v6_ssrga_spectra_Ka.nc"
 
-if Write_output==True:
+if Write_output==True and Run_pamtra==True:
     with Dataset(output_file, "w", format="NETCDF4") as nc_out:
 
     # Dimensions
@@ -437,15 +468,23 @@ if Write_output==True:
         nc_out.createDimension("col", ncol)
         #nc_out.createDimension("level", len(pam.r["radar_hgt"][0,0,:]))
         nc_out.createDimension("level", T.shape[2])
-        nc_out.createDimension("hydro", 4)
-        nc_out.createDimension("bins", len(pam.r["radar_vel"][0]))
 
+        if ok_bs==True:
+            nc_out.createDimension("hydro", 5)
+        else:
+            nc_out.createDimension("hydro", 4)
     # Variables simples
+
         nc_out.createVariable("time", "f8", ("time",))[:] = time[isel:jsel]
         nc_out.createVariable("col", "i4", ("col",))[:] = np.arange(ncol)
         nc_out.createVariable("level", "f4", ("time","level"))[:] = pam.r["radar_hgt"][:,0,:]
-        nc_out.createVariable("hydro", "i4", ("hydro",))[:] = np.arange(4)
-        nc_out.createVariable("bins", "f4", ("bins",))[:] = pam.r["radar_vel"][0]
+        if ok_bs==True:
+            nc_out.createVariable("hydro", "i4", ("hydro",))[:] = np.arange(5)
+
+        else:
+            nc_out.createVariable("hydro", "i4", ("hydro",))[:] = np.arange(4)
+
+
     # Écriture des champs
         nc_out.createVariable("lon", "f4", ("time", "col"))[:] = pamData["lon"]
         nc_out.createVariable("lat", "f4", ("time", "col"))[:] = pamData["lat"]
@@ -453,7 +492,17 @@ if Write_output==True:
         nc_out.createVariable("relhum", "f4", ("time", "col", "level"))[:] = pamData["relhum"]
         nc_out.createVariable("hgt", "f4", ("time", "col", "level"))[:] = pamData["hgt"]
         nc_out.createVariable("press", "f4", ("time", "col", "level"))[:] = pamData["press"]
-        nc_out.createVariable("hydro_q", "f4", ("time", "col", "level", "hydro"))[:] = pamData["hydro_q"]
+
+        if ok_bs==True:
+            merged_hydro_q=np.zeros(np.shape(pamData["hydro_q"][:,:,:,:5]))
+            merged_hydro_q[:,:,:,:4] = pamData["hydro_q"][:,:,:,:4]
+            merged_hydro_q[:,:,:,4] = np.sum(pamData["hydro_q"][:,:,:,4:],-1)
+        else:
+            merged_hydro_q=np.zeros(np.shape(pamData["hydro_q"][:,:,:,:4]))
+            merged_hydro_q[:,:,:,:3] = pamData["hydro_q"][:,:,:,:3]
+            merged_hydro_q[:,:,:,3] = np.sum(pamData["hydro_q"][:,:,:,3:],-1)
+
+        nc_out.createVariable("hydro_q", "f4", ("time", "col", "level", "hydro"))[:] = merged_hydro_q
         nc_out.createVariable("N_ice", "f4", ("time", "col", "level"))[:] = N_ice
         nc_out.createVariable("N_liq", "f4", ("time", "col", "level"))[:] = N_liq
         nc_out.createVariable("N_snow", "f4", ("time", "col", "level"))[:] = N_snow
@@ -461,6 +510,8 @@ if Write_output==True:
         nc_out.createVariable("Ze", "f4", ("time", "col", "level"))[:] = pam.r["Ze"][:,:,:,0,0,0]
 
         if Run_spectra==True: # only for spectra radar_mode
+            nc_out.createDimension("bins", len(pam.r["radar_vel"][0]))
+            nc_out.createVariable("bins", "f4", ("bins",))[:] = pam.r["radar_vel"][0]
             nc_out.createVariable("MDV", "f4", ("time", "col", "level"))[:] = pam.r["radar_moments"][:,:,:,0,0,0,0]
             nc_out.createVariable("Sigma", "f4", ("time", "col", "level"))[:] = pam.r["radar_moments"][:,:,:,0,0,0,1]
             nc_out.createVariable("Skewness", "f4", ("time", "col", "level"))[:] = pam.r["radar_moments"][:,:,:,0,0,0,2]
@@ -481,8 +532,8 @@ if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
 
         if Run_parall==True:
             pam.runParallelPamtra(freq,
-                      pp_deltaX=2,    # profiles in X per worker
-                      pp_deltaY=2,    # profile in Y per worker
+                      pp_deltaX={pp_deltaX},    # profiles in X per worker
+                      pp_deltaY={pp_deltaY},    # profile in Y per worker
                       pp_deltaF=1,    # frequency per worker
                       pp_local_workers="auto")  # detect CPU cores
 
@@ -496,14 +547,22 @@ if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
             nc_out.createDimension("time", len(time[isel:jsel]))
             nc_out.createDimension("col", ncol)
             nc_out.createDimension("level", T.shape[2])
-            nc_out.createDimension("hydro", 4)
+            if ok_bs==True:
+                nc_out.createDimension("hydro", 5)
+            else:
+                nc_out.createDimension("hydro", 4)
+
             nc_out.createDimension("bins", len(pam.r["radar_vel"][0]))
 
     # Variables simples
             nc_out.createVariable("time", "f8", ("time",))[:] = time[isel:jsel]
             nc_out.createVariable("col", "i4", ("col",))[:] = np.arange(ncol)
             nc_out.createVariable("level", "f4", ("time","level"))[:] = pam.r["radar_hgt"][:,0,:]
-            nc_out.createVariable("hydro", "i4", ("hydro",))[:] = np.arange(4)
+            if ok_bs==True:
+                nc_out.createVariable("hydro", "i4", ("hydro",))[:] = np.arange(5)
+            else:
+                nc_out.createVariable("hydro", "i4", ("hydro",))[:] = np.arange(4)
+
             nc_out.createVariable("bins", "f4", ("bins",))[:] = pam.r["radar_vel"][0]
     # Écriture des champs
             nc_out.createVariable("lon", "f4", ("time", "col"))[:] = pamData["lon"]
@@ -512,7 +571,18 @@ if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
             nc_out.createVariable("relhum", "f4", ("time", "col", "level"))[:] = pamData["relhum"]
             nc_out.createVariable("hgt", "f4", ("time", "col", "level"))[:] = pamData["hgt"]
             nc_out.createVariable("press", "f4", ("time", "col", "level"))[:] = pamData["press"]
-            nc_out.createVariable("hydro_q", "f4", ("time", "col", "level", "hydro"))[:] = pamData["hydro_q"]
+
+            if ok_bs==True:
+                merged_hydro_q=np.zeros(np.shape(pamData["hydro_q"][:,:,:,:5]))
+                merged_hydro_q[:,:,:,:4] = pamData["hydro_q"][:,:,:,:4]
+                merged_hydro_q[:,:,:,4] = np.sum(pamData["hydro_q"][:,:,:,4:],-1)
+ 
+            else:
+                merged_hydro_q=np.zeros(np.shape(pamData["hydro_q"][:,:,:,:4]))
+                merged_hydro_q[:,:,:,:3] = pamData["hydro_q"][:,:,:,:3]
+                merged_hydro_q[:,:,:,3] = np.sum(pamData["hydro_q"][:,:,:,3:],-1)
+
+            nc_out.createVariable("hydro_q", "f4", ("time", "col", "level", "hydro"))[:] = merged_hydro_q
             nc_out.createVariable("N_ice", "f4", ("time", "col", "level"))[:] = N_ice
             nc_out.createVariable("N_liq", "f4", ("time", "col", "level"))[:] = N_liq
             nc_out.createVariable("N_snow", "f4", ("time", "col", "level"))[:] = N_snow
@@ -526,5 +596,3 @@ if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
                 nc_out.createVariable("Kurtosis", "f4", ("time", "col", "level"))[:] = pam.r["radar_moments"][:,:,:,0,0,0,3]
                 nc_out.createVariable("Spectra", "f4", ("time", "col", "level","bins"))[:] = pam.r["radar_spectra"][:,:,:,0,0,:]
             print("2nd PAMTRA output saved as NetCDF file",output_file[:-3]+"_upward_part.nc")
-
-

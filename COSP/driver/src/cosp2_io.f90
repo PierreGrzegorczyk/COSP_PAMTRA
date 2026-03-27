@@ -1942,7 +1942,7 @@ contains
   ! SUBROUTINE nc_read_input_file
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   SUBROUTINE NC_READ_INPUT_FILE(fname,Npnts,Nl,Nhydro,lon,lat,p,ph,z,zh,T,qv,rh,tca,cca, &
-                                mr_lsliq,mr_lsice,mr_ccliq,mr_ccice, precip_frac,        &
+                                mr_lsliq,mr_lsice,mr_bs,mr_ccliq,mr_ccice, precip_frac,  &
                                 precip_fracclr,fl_lsrain,fl_lssnow,                      &
                                 fl_lsgrpl,fl_ccrain,fl_ccsnow,Reff,dtau_s,dtau_c,dem_s,  &
                                 dem_c,skt,landmask,mr_ozone,u_wind,v_wind,sunlit,        &
@@ -1953,7 +1953,7 @@ contains
     integer,intent(in) :: Npnts,Nl,Nhydro
     real(wp),dimension(Npnts),intent(out) :: lon,lat
     real(wp),dimension(Npnts,Nl),target,intent(out) :: p,ph,z,zh,T,qv,rh,tca,cca, &
-         mr_lsliq,mr_lsice,mr_ccliq,mr_ccice,fl_lsrain,fl_lssnow,fl_lsgrpl, &
+         mr_lsliq,mr_lsice,mr_bs,mr_ccliq,mr_ccice,fl_lsrain,fl_lssnow,fl_lsgrpl, &
          fl_ccrain,fl_ccsnow,dtau_s,dtau_c,dem_s,dem_c,mr_ozone, precip_frac, &
          precip_fracclr
     real(wp),dimension(Npnts,Nl,Nhydro),intent(out) :: Reff
@@ -2191,6 +2191,13 @@ contains
           else
              call map_ll_to_point(Na,Nb,Npoints,x3=x3,y2=mr_lsice)
           endif
+
+       case ('mr_bs')
+          if (Lpoint) then
+             mr_bs(1:Npoints,:) = x2(1:Npoints,1:Nlevels)
+          else
+             call map_ll_to_point(Na,Nb,Npoints,x3=x3,y2=mr_bs)
+          endif
        case ('mr_ccliq')
           if (Lpoint) then
              mr_ccliq(1:Npoints,:) = x2(1:Npoints,1:Nlevels)
@@ -2217,8 +2224,7 @@ contains
           else
              call map_ll_to_point(Na,Nb,Npoints,x3=x3,y2=precip_fracclr)
           endif
-          tca = tca+ precip_fracclr
-
+          !tca = tca+ precip_fracclr
        case ('fl_lsrain')
           if (Lpoint) then
              fl_lsrain(1:Npoints,:) = x2(1:Npoints,1:Nlevels)

@@ -54,6 +54,39 @@ module dia2vel
       return
   end subroutine dia2vel_lmdz_snow
 
+
+  subroutine dia2vel_lmdz_bs(errorstatus,nDia,velSpec,diaSpec_SI)            !out
+  !define the blowing snow fall speed for lmdz monodispersed particles
+      use kinds
+      use constants
+      use report_module
+      implicit none
+
+      real :: vbs_lmdz
+      integer, intent(in) :: nDia
+      real(kind=dbl), intent(in), dimension(ndia)::diaSpec_SI
+      integer(kind=long), intent(out) :: errorstatus
+      integer(kind=long) :: err = 0
+      character(len=33) :: nameOfRoutine = 'dia2vel_lmdz_bs'
+
+      real(kind=dbl), dimension(ndia), intent(out) :: velSpec
+
+      vbs_lmdz=0.5 ! 1 m s-1 fall speed of blowing snow in lmdz
+
+      if (verbose >= 2) call report(info,'Start of ', nameOfRoutine)
+      err = success
+
+      !velSpec = vbs_lmdz*(0.5 * diaSpec_SI / maxval(diaSpec_SI)+0.5 * diaSpec_SI / minval(diaSpec_SI))
+      velSpec = [0.99*vbs_lmdz, 1.01*vbs_lmdz]
+      errorstatus = err
+      if (verbose >= 2) call report(info,'End of ', nameOfRoutine)
+
+      return
+  end subroutine dia2vel_lmdz_bs
+
+
+
+
   subroutine dia2vel_lmdz_rain(errorstatus,nDia,velSpec,diaSpec_SI)            !out
   !define the rain fall speed for lmdz monodispersed particles
       use kinds

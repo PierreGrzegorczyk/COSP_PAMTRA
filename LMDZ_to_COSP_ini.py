@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
+ok_bs={blowing_snow}
 # ___________________________________________
 
 ## Path and data input
@@ -40,7 +40,8 @@ pres=pres.T
 
 # Input variables needed for cosp
 var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
-
+if ok_bs==True:
+    var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter','qbs'] #don't forget pres
 
 for var in var_list:
     globals()[var]=nc_data.variables[var][:]
@@ -126,11 +127,11 @@ dst.title = "COSP inputs generated from ICOLMDZ"
 dst.Conventions = "CF-1.0"
 dst.history = "2025-10-23"
 dst.description = "LMDZ to COSP"
-
+n_hydro=10
 # === DIMENSIONS ===
 dst.createDimension("point", npoint)
 dst.createDimension("level", npres)
-dst.createDimension("hydro", 9)
+dst.createDimension("hydro", n_hydro)
 
 # === FUNCTION ===
 
@@ -193,6 +194,11 @@ create_var("precip_fracclr", "f4", ("level","point"), pfraclr) #in cloud + clear
 
 create_var("mr_lsliq", "f4", ("level", "point"),oliq)
 create_var("mr_lsice", "f4", ("level", "point"),oice)
+if ok_bs==True:
+    create_var("mr_bs", "f4", ("level", "point"),qbs)
+else:
+    create_var("mr_bs", "f4", ("level", "point"),np.zeros(np.shape(oliq)))
+
 create_var("mr_ccliq", "f4", ("level", "point"),np.zeros(np.shape(oliq))) #no convective clouds
 create_var("mr_ccice", "f4", ("level", "point"),np.zeros(np.shape(oliq))) #no convective clouds
 
@@ -242,7 +248,7 @@ for v in ["dtau_s", "dtau_c", "dem_s", "dem_c"]:
   #      I_LSGRPL = 9    ! Large-scale (stratiform) groupel
 
 
-array2=np.zeros((9,npres,npoint))
+array2=np.zeros((n_hydro,npres,npoint))
 array2[:,:,:]=1e-30
 # array2[0,:,:]=ref_liq*1e-6
 # array2[1,:,:]=ref_ice*1e-6

@@ -102,6 +102,7 @@ program cosp2_test
        cca,       & ! Convective cloud fraction (1) 
        mr_lsliq,  & ! Mass mixing ratio for stratiform cloud liquid (kg/kg)
        mr_lsice,  & ! Mass mixing ratio for stratiform cloud ice (kg/kg)
+       mr_bs,     & ! Mass mixing ratio for blowing snow (kg/kg)
        mr_ccliq,  & ! Mass mixing ratio for convective cloud liquid (kg/kg)
        mr_ccice,  & ! Mass mixing ratio for convective cloud ice (kg/kg)
        mr_ozone,  & ! Mass mixing ratio for ozone (kg/kg)
@@ -255,6 +256,7 @@ program cosp2_test
   integer,parameter :: &
        I_LSCLIQ = 1, & ! Large-scale (stratiform) liquid
        I_LSCICE = 2, & ! Large-scale (stratiform) ice
+       I_BS = 10,    & ! Blowing snow
        I_LSRAIN = 3, & ! Large-scale (stratiform) rain
        I_LSSNOW = 4, & ! Large-scale (stratiform) snow
        I_CVCLIQ = 5, & ! Convective liquid
@@ -269,7 +271,7 @@ program cosp2_test
        I_CVC = 2    ! Convective clouds    
 
   ! Microphysical settings for the precipitation flux to mixing ratio conversion
-  real(wp),parameter,dimension(N_HYDRO) :: &
+  real(wp),parameter,dimension(N_HYDRO-1) :: &
                  ! LSL   LSI      LSR       LSS   CVL  CVI      CVR       CVS       LSG
        N_ax    = (/-1., -1.,     8.e6,     3.e6, -1., -1.,     8.e6,     3.e6,     4.e6/),&
        N_bx    = (/-1., -1.,      0.0,      0.0, -1., -1.,      0.0,      0.0,      0.0/),&
@@ -288,7 +290,7 @@ program cosp2_test
    real :: vsnow,vrain,rho
    integer :: ncid, ierr
    integer :: dimid_point, dimid_col, dimid_lev
-   integer :: varid_LSCLIQ, varid_LSCICE, varid_LSRAIN, varid_LSSNOW
+   integer :: varid_LSCLIQ, varid_LSCICE, varid_BS,varid_LSRAIN, varid_LSSNOW
    integer :: dimids(3)
 
    call cpu_time(driver_time(1))
@@ -314,6 +316,7 @@ program cosp2_test
            zlev(Npoints,Nlevels),zlev_half(Npoints,Nlevels),T(Npoints,Nlevels),          &
            sh(Npoints,Nlevels),rh(Npoints,Nlevels),tca(Npoints,Nlevels),                 &
            cca(Npoints,Nlevels),mr_lsliq(Npoints,Nlevels),mr_lsice(Npoints,Nlevels),     &
+           mr_bs(Npoints,Nlevels),                                                       &
            mr_ccliq(Npoints,Nlevels),mr_ccice(Npoints,Nlevels),                          &
            precip_frac(Npoints,Nlevels),precip_fracclr(Npoints,Nlevels),                 &
            fl_lsrain(Npoints,Nlevels),fl_lssnow(Npoints,Nlevels),                        &
@@ -326,8 +329,8 @@ program cosp2_test
 
   fileIN = trim(dinput)//trim(finput)
   call nc_read_input_file(fileIN,Npoints,Nlevels,N_HYDRO,lon,lat,p,ph,zlev,zlev_half,    &
-                       T,sh,rh,tca,cca,mr_lsliq,mr_lsice,mr_ccliq,mr_ccice,precip_frac,  &
-                          precip_fracclr,fl_lsrain, &
+                       T,sh,rh,tca,cca,mr_lsliq,mr_lsice,mr_bs,mr_ccliq,mr_ccice,        &
+                           precip_frac, precip_fracclr,fl_lsrain,                        &
                           fl_lssnow,fl_lsgrpl,fl_ccrain,fl_ccsnow,Reff,dtau_s,dtau_c,    &
                           dem_s,dem_c,skt,landmask,mr_ozone,u_wind,v_wind,sunlit,        &
                           emsfc_lw,geomode,Nlon,Nlat,surfelev)
@@ -505,7 +508,8 @@ program cosp2_test
           fl_lsrain(start_idx:end_idx,Nlevels:1:-1),fl_lssnow(start_idx:end_idx,Nlevels:1:-1), &
           fl_lsgrpl(start_idx:end_idx,Nlevels:1:-1),fl_ccrain(start_idx:end_idx,Nlevels:1:-1), &
           fl_ccsnow(start_idx:end_idx,Nlevels:1:-1),mr_lsliq(start_idx:end_idx,Nlevels:1:-1),  &
-          mr_lsice(start_idx:end_idx,Nlevels:1:-1),mr_ccliq(start_idx:end_idx,Nlevels:1:-1),   &
+          mr_lsice(start_idx:end_idx,Nlevels:1:-1),mr_bs(start_idx:end_idx,Nlevels:1:-1),      &
+          mr_ccliq(start_idx:end_idx,Nlevels:1:-1),                                            &
           mr_ccice(start_idx:end_idx,Nlevels:1:-1),Reff(start_idx:end_idx,Nlevels:1:-1,:),     &
           dtau_c(start_idx:end_idx,nLevels:1:-1),dtau_s(start_idx:end_idx,nLevels:1:-1),       &
           dem_c(start_idx:end_idx,nLevels:1:-1),dem_s(start_idx:end_idx,nLevels:1:-1),         &
@@ -552,13 +556,13 @@ contains
   subroutine subsample_and_optics(nPoints, nLevels, nColumns, nHydro, overlap, use_vgrid,   &
        use_precipitation_fluxes, lidar_ice_type, sd, tca, precip_frac, precip_fracclr,      &
        cca, fl_lsrainIN, fl_lssnowIN,    &
-       fl_lsgrplIN, fl_ccrainIN, fl_ccsnowIN, mr_lsliq, mr_lsice, mr_ccliq, mr_ccice,       &
+       fl_lsgrplIN, fl_ccrainIN, fl_ccsnowIN, mr_lsliq, mr_lsice,mr_bs,mr_ccliq,mr_ccice,   &
        reffIN, dtau_c, dtau_s, dem_c, dem_s, cospstateIN, cospIN)
     ! Inputs
     integer,intent(in) :: nPoints, nLevels, nColumns, nHydro, overlap, lidar_ice_type
-    real(wp),intent(in),dimension(nPoints,nLevels) :: tca,cca,mr_lsliq,mr_lsice,mr_ccliq,   &
-         mr_ccice,dtau_c,dtau_s,dem_c,dem_s,fl_lsrainIN,fl_lssnowIN,fl_lsgrplIN,fl_ccrainIN,&
-         fl_ccsnowIN, precip_frac, precip_fracclr
+    real(wp),intent(in),dimension(nPoints,nLevels) :: tca,cca,mr_lsliq,mr_lsice,mr_bs, &
+    mr_ccliq, mr_ccice,dtau_c,dtau_s,dem_c,dem_s,fl_lsrainIN,fl_lssnowIN,fl_lsgrplIN,fl_ccrainIN, &
+    fl_ccsnowIN, precip_frac, precip_fracclr
     real(wp),intent(in),dimension(nPoints,nLevels,nHydro) :: reffIN
     logical,intent(in) :: use_vgrid ! .false.: outputs on model levels
                                     ! .true.:  outputs on evenly-spaced vertical levels.
@@ -619,7 +623,7 @@ contains
        allocate(frac_prec(nPoints,nColumns,nLevels))
        call prec_scops(nPoints,nLevels,nColumns,ls_p_rate,cv_p_rate,cospIN%frac_out,frac_prec)
        deallocate(ls_p_rate,cv_p_rate)
-
+       !print *, 'MAXVAL1', MAXVAL(cospIN%frac_out),MAXVAL(frac_prec)
 
        !________________precip adjust from Hillman 2018: modified by pg_______________________
 
@@ -629,7 +633,7 @@ contains
        !    pfrac(j,k)=0.25+0.25*pfrac(j,k)+0.5*tca(j,k)
        !    if (pfrac(j,k).gt.0.9*tca(j,k)) pfrac(j,k)=0.9*tca(j,k)
        !    if (pfrac(j,k).lt.0.3) pfrac(j,k)=0.3
-       !    pfrac(j,k)=0.8*tca(j,k)!precip_frac(j)*tca(j,k)
+       !pfrac(j,k)=0.8*tca(j,k)!precip_frac(j)*tca(j,k)
        !     !pfrac(j,k)=precip_frac(j,k)
        !    enddo
        !enddo
@@ -644,10 +648,10 @@ contains
        ! Allocate
        allocate(frac_ls(nPoints,nLevels),prec_ls(nPoints,nLevels),                       &
                 frac_cv(nPoints,nLevels),prec_cv(nPoints,nLevels))
-
-!old plot       open(unit=98, file='../data/my_outputs/Output_subcolumns.csv', status='unknown', action='write', position='append')
-!old plot       open(unit=99, file='../data/my_outputs/Output_subcolumns_mratio.csv', status='unknown', action='write', position='append')
-       jsel=45
+        ! old plot
+       open(unit=98, file='../data/my_outputs/Output_subcolumns.csv', status='unknown', action='write', position='append')
+       open(unit=99, file='../data/my_outputs/Output_subcolumns_mratio.csv', status='unknown', action='write', position='append')
+       jsel=1
        ! Initialize
        frac_ls(1:nPoints,1:nLevels) = 0._wp
        prec_ls(1:nPoints,1:nLevels) = 0._wp
@@ -657,10 +661,10 @@ contains
           do k=1,nLevels
              do i=1,nColumns
                 !_________Old plot added by PG________
-                !if (j.eq.jsel) then 
-                !uif (i.eq.1.and.k.eq.1) write (98,*) "level,column,frac,fracprec" 
-                !write (98,*) 1,",",k,",",i,",",cospIN%frac_out(j,i,k),",",frac_prec(j,i,k)    
-                !endif
+                if (j.eq.jsel) then 
+                if (i.eq.1.and.k.eq.1) write (98,*) "level,column,frac,fracprec" 
+                write (98,*) 1,",",k,",",i,",",cospIN%frac_out(j,i,k),",",frac_prec(j,i,k)    
+                endif
                 if (cospIN%frac_out(j,i,k)  .eq. 1)  frac_ls(j,k) = frac_ls(j,k)+1._wp
                 if (cospIN%frac_out(j,i,k)  .eq. 2)  frac_cv(j,k) = frac_cv(j,k)+1._wp
                 if (frac_prec(j,i,k) .eq. 1)  prec_ls(j,k) = prec_ls(j,k)+1._wp
@@ -695,8 +699,10 @@ contains
           where (column_frac_out == I_LSC)
              mr_hydro(:,k,:,I_LSCLIQ) = mr_lsliq
              mr_hydro(:,k,:,I_LSCICE) = mr_lsice
+             mr_hydro(:,k,:,I_BS) = mr_bs
              Reff(:,k,:,I_LSCLIQ)     = ReffIN(:,:,I_LSCLIQ)
              Reff(:,k,:,I_LSCICE)     = ReffIN(:,:,I_LSCICE)
+             Reff(:,k,:,I_BS)     = ReffIN(:,:,I_LSCICE)
           ! CONV clouds   
           elsewhere (column_frac_out == I_CVC)
              mr_hydro(:,k,:,I_CVCLIQ) = mr_ccliq
@@ -736,6 +742,7 @@ contains
              if (frac_ls(j,k) .ne. 0.) then
                 mr_hydro(j,:,k,I_LSCLIQ) = mr_hydro(j,:,k,I_LSCLIQ)/frac_ls(j,k)
                 mr_hydro(j,:,k,I_LSCICE) = mr_hydro(j,:,k,I_LSCICE)/frac_ls(j,k)
+                mr_hydro(j,:,k,I_BS) = mr_hydro(j,:,k,I_BS)/frac_ls(j,k)
              endif
              if (frac_cv(j,k) .ne. 0.) then
                 mr_hydro(j,:,k,I_CVCLIQ) = mr_hydro(j,:,k,I_CVCLIQ)/frac_cv(j,k)
@@ -803,6 +810,7 @@ contains
                 Np(nPoints,1,nLevels,nHydro))
        mr_hydro(:,1,:,I_LSCLIQ) = mr_lsliq
        mr_hydro(:,1,:,I_LSCICE) = mr_lsice
+       mr_hydro(:,1,:,I_BS) = mr_bs
 
        mr_hydro(:,1,:,I_CVCLIQ) = mr_ccliq
        mr_hydro(:,1,:,I_CVCICE) = mr_ccice
@@ -810,22 +818,23 @@ contains
     endif
 
      !________Old plot added by PG_______________
-     !do k=1,nLevels
-     ! do i=1,nColumns
-     ! if (i.eq.1.and.k.eq.1) write(99,*)"index,level,column,I_CVCLIQ,I_CVCICE,I_LSCLIQ,I_LSCICE&
-     !,I_CVRAIN,I_CVSNOW,I_LSRAIN,I_LSSNOW,I_LSGRPL,none" 
-     !write(99,'(I0, ",", I0, ",", I0, ",", 9(G0, ","))') 2, k, i, &
-     !    mr_hydro(jsel,i,k,I_CVCLIQ), &
-     !    mr_hydro(jsel,i,k,I_CVCICE), &
-     !    mr_hydro(jsel,i,k,I_LSCLIQ), &
-     !    mr_hydro(jsel,i,k,I_LSCICE), &
-     !    mr_hydro(jsel,i,k,I_CVRAIN), &
-     !    mr_hydro(jsel,i,k,I_CVSNOW), &
-     !    mr_hydro(jsel,i,k,I_LSRAIN), &
-     !    mr_hydro(jsel,i,k,I_LSSNOW), &
-     !    mr_hydro(jsel,i,k,I_LSGRPL)
-     !    enddo
-     !  enddo
+     do k=1,nLevels
+     do i=1,nColumns
+      if (i.eq.1.and.k.eq.1) write(99,*)"index,level,column,I_CVCLIQ,I_CVCICE,I_LSCLIQ,I_LSCICE,I_BS&
+     ,I_CVRAIN,I_CVSNOW,I_LSRAIN,I_LSSNOW,I_LSGRPL,none" 
+     write(99,'(I0, ",", I0, ",", I0, ",", 9(G0, ","))') 2, k, i, &
+         mr_hydro(jsel,i,k,I_CVCLIQ), &
+         mr_hydro(jsel,i,k,I_CVCICE), &
+         mr_hydro(jsel,i,k,I_LSCLIQ), &
+         mr_hydro(jsel,i,k,I_LSCICE), &
+         mr_hydro(jsel,i,k,I_BS), &
+         mr_hydro(jsel,i,k,I_CVRAIN), &
+         mr_hydro(jsel,i,k,I_CVSNOW), &
+         mr_hydro(jsel,i,k,I_LSRAIN), &
+         mr_hydro(jsel,i,k,I_LSSNOW), &
+         mr_hydro(jsel,i,k,I_LSGRPL)
+         enddo
+       enddo
     !________________________write mr of hydrometeors_______________________________________
     ! === Create NetCDF file ===
     ierr = nf90_create("../data/my_outputs/COSP_to_PAMTRA.nc", NF90_CLOBBER, ncid)
@@ -842,6 +851,7 @@ contains
     ! === Define variables ===
     ierr = nf90_def_var(ncid, "I_LSCLIQ", NF90_REAL, dimids, varid_LSCLIQ)
     ierr = nf90_def_var(ncid, "I_LSCICE", NF90_REAL, dimids, varid_LSCICE)
+    ierr = nf90_def_var(ncid, "I_BS", NF90_REAL, dimids, varid_BS)
     ierr = nf90_def_var(ncid, "I_LSRAIN", NF90_REAL, dimids, varid_LSRAIN)
     ierr = nf90_def_var(ncid, "I_LSSNOW", NF90_REAL, dimids, varid_LSSNOW)
 
@@ -850,6 +860,7 @@ contains
     ! === Write data ===
     ierr = nf90_put_var(ncid, varid_LSCLIQ, mr_hydro(:, :, :, I_LSCLIQ))
     ierr = nf90_put_var(ncid, varid_LSCICE, mr_hydro(:, :, :, I_LSCICE))
+    ierr = nf90_put_var(ncid, varid_BS, mr_hydro(:, :, :, I_BS))
     ierr = nf90_put_var(ncid, varid_LSRAIN, mr_hydro(:, :, :, I_LSRAIN))
     ierr = nf90_put_var(ncid, varid_LSSNOW, mr_hydro(:, :, :, I_LSSNOW))
 
