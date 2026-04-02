@@ -6,6 +6,7 @@
 LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
 #LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v5/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsDC.nc'
 #LMDZ_output1D: '/home/grzegorc/NAWDIC/curtain_lmdz.nc'
+blowing_snow: False
 
 # ==================================================
 # COSP Parameters
@@ -52,7 +53,7 @@ jsel: 1 #134 #576 ending index of the selection: should be smaller than npoint
 Scattering: 'Ori2021_mix_column_dendrites' #Ice particle type for SSRGA: 
 #Scattering: 'Ori2021_rimed_aggregate_dendrites' #Ice particle type for SSRGA: 
 #Scattering names: Ori2021_mix_column_dendrites,Ori2021_rimed_aggregate_dendrites,Hogan2017_v1_aggregate_bullet_rosettes,Hogan2017_v2_aggregate_bullet_rosettes
-Radar_type: 'MIRA35C' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C
+Radar_type: 'BASTA' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C
 adjust_noise: True
 Ze_noise_1km: -200 
 
@@ -61,10 +62,10 @@ Ze_noise_1km: -200
 Run_pamtra: True      # If False, PAMTRA execution is skipped: useful for debugging
 Run_parall: False      # Enable parallel processing (faster execution), necessary for doppler spectra
 Run_spectra: False #True    # Compute Doppler spectra (increases a lot the computation time)
-Write_output: True #True #True   # Write or not .nc output
+Write_output: False #True #True   # Write or not .nc output
 
 
   #FOUTPUTpamtra: "../Ouput_golden_case_D17_MIRAv6_ssrga_spectra_Ka.nc"
-FOUTPUTpamtra: "../output/Prof_sensi_100_Ray_Mira.nc"
+FOUTPUTpamtra: "../output/Prof_sensi_100_var_overlap.nc"
 
 #FOUTPUTpamtra: "../NAWDIC.nc"

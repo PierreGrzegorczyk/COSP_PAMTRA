@@ -215,7 +215,7 @@ dst.description = "LMDZ to COSP"
 # === DIMENSIONS ===
 dst.createDimension("point", npoint)
 dst.createDimension("level", npres)
-dst.createDimension("hydro", 9)
+dst.createDimension("hydro", 10)
 
 # === FUNCTION ===
 
@@ -329,7 +329,7 @@ for v in ["dtau_s", "dtau_c", "dem_s", "dem_c"]:
   #      I_LSGRPL = 9    ! Large-scale (stratiform) groupel
 
 
-array2=np.zeros((9,npres,npoint))
+array2=np.zeros((10,npres,npoint))
 array2[:,:,:]=1e-30
 # array2[0,:,:]=ref_liq*1e-6
 # array2[1,:,:]=ref_ice*1e-6

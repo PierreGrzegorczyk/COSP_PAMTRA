@@ -16,7 +16,7 @@
 ! DATE:   12 March 2016
 ! ****************************************************************************
 subroutine gen_subcol_var(npts, ncol, nlev, cb, &
-                          qmean, q, T, seed,rho)
+                          qmean, q, T,tca, seed)
     !f2py integer, intent(in) :: npts, ncol, nlev
     !f2py real, intent(in) :: cb(npts, ncol, nlev)
     !f2py real, intent(in) :: qmean(npts, nlev) 
@@ -30,7 +30,7 @@ subroutine gen_subcol_var(npts, ncol, nlev, cb, &
     ! inputs
     integer, intent(in) :: npts, ncol, nlev
     real, intent(in) :: cb(npts, ncol, nlev) ! cloudy flag
-    real, intent(in) :: qmean(npts, nlev),T(npts, nlev),rho(npts, nlev) ! condensate mean, temperature and cloud frac
+    real, intent(in) :: qmean(npts, nlev),T(npts, nlev),tca(npts, nlev) ! condensate mean, temperature and cloud frac
     integer, intent(in) :: seed ! seed for random number generator
 
     ! outputs
@@ -45,10 +45,9 @@ subroutine gen_subcol_var(npts, ncol, nlev, cb, &
     real, dimension(nsamples) :: x, cdf  ! sample of variates to build CDF
     integer, dimension(nsamples) :: xi  ! sort indices from cdf
 
-    !real, dimension(npts, nlev) :: rho ! rank correlation
+    real, dimension(npts, nlev) :: rho ! rank correlation
     real :: sum_var
-    real :: mean_q ! added by pg for nomalization
-    !rho(:,:)=1.
+    rho(:,:)=1.
     ! initialize psuedo-random number generator
     if (seed /= 0) then
         print *, 'Initializing random seed from gen_subcol_var'
@@ -102,9 +101,7 @@ subroutine gen_subcol_var(npts, ncol, nlev, cb, &
             ! NOTE: obtained via method of moments
             !____________values for qi gamma distribution of cirrus clouds in Borella 2024.
             kappa = 4/3
-            theta = qmean(i, k)!/tca(i,k)
-            !theta = qvar(i, k) / qmean(i, k)
-
+            theta = qmean(i, k)/tca(i,k)
             if (kappa <= 0 .or. theta <= 0) then
                 print *, 'WARNING: distribution params not calculated'
                 cycle
@@ -147,16 +144,6 @@ subroutine gen_subcol_var(npts, ncol, nlev, cb, &
             !  endif
             !end do
             !endif ! temperature condition added by pg
-            
-                end do
-            end do
-        !____________added by pg: normalize the cloud content______
-        do i = 1, npts
-        do k = 1, nlev
-        mean_q = sum(q(i, :, k)) / ncol + 1e-30
-        do j = 1, ncol
-        q(i, j, k)=q(i, j, k)/mean_q*qmean(i,k)
-        enddo
-        enddo
-        enddo
+       end do
+    end do
 end subroutine

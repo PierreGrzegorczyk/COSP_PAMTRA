@@ -11,14 +11,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-ok_bs=True
+ok_bs=False
 # ___________________________________________
 
 ## Path and data input
 import csv
 plt.rcParams['font.size'] = 13
 
-nc_file = '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v9/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
+nc_file = '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
 
 nc_data = Dataset(nc_file, "r")
 

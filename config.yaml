@@ -47,15 +47,15 @@ pp_deltaY: 2    #2 profile in Y per worker
 # Allows you to run the simulator for a part of the dataset.
 # This is especially useful when npoint is large: 
 
-isel: 864 #1114 #288 starting index of the selection: should be smaller than jsel
-jsel: 1728 #134 #576 ending index of the selection: should be smaller than npoint 
+isel: 1300 #864 #1114 #288 starting index of the selection: should be smaller than jsel
+jsel: 1400 #1728 #134 #576 ending index of the selection: should be smaller than npoint 
 
 ### Radar configuration
 Scattering: 'Ori2021_mix_column_dendrites' #Ice particle type for SSRGA: 
 #Scattering: 'Ori2021_rimed_aggregate_dendrites' #Ice particle type for SSRGA: 
 #Scattering names: Ori2021_mix_column_dendrites,Ori2021_rimed_aggregate_dendrites,Hogan2017_v1_aggregate_bullet_rosettes,Hogan2017_v2_aggregate_bullet_rosettes
-Radar_type: 'MIRA35C' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C; EarthCARE_cpr 
-adjust_noise: False  #if you want another noise level that the one set to the instrument inside PAMTRA python script
+Radar_type: 'BASTA' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C; EarthCARE_cpr 
+adjust_noise: True #False  #if you want another noise level that the one set to the instrument inside PAMTRA python script
 Ze_noise_1km: -200
 
 
@@ -66,4 +66,4 @@ Run_spectra: True #True #True    # Compute Doppler spectra (increases a lot the 
 Write_output: True #True #True   # Write or not .nc output
 
 
-FOUTPUTpamtra: "../output/MIRA35C_D17_v9.nc"
+FOUTPUTpamtra: "../output/Ground_test.nc"

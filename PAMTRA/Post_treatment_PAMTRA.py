@@ -3,14 +3,14 @@ import matplotlib.pylab as plt
 import numpy as np
 
 ## config parameters
-isel=864
-jsel=1728
+isel=0
+jsel=1
 
 Run_pamtra=True
-Run_spectra=True
+Run_spectra=False
 Write_output=True
 
-output_file = "../output/MIRA35C_D17_v9.nc"
+output_file = "../output/Prof_sensi_100_var_overlap.nc"
 output_file2 = output_file[:-3]+"_upward_part.nc"
 
 if "Ground"=="Aircraft" and "up"=='both' and Write_output==True:

@@ -114,15 +114,29 @@ isel={isel}
 
 #________________Quicklook for data before running__________________
 
-plt.figure('Qs quicklook')
-plt.imshow(np.mean(Qs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qs[isel:jsel,:,::-1]))
+plt.figure('Qs quicklook',figsize=(14,6))
+plt.subplot(221)
+plt.title('a) Qi',loc='left')
+plt.imshow(np.mean(Qi[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qi[isel:jsel,:,::-1]),interpolation='none')
 plt.colorbar()
-print("Show Qs")
 
-plt.figure('Qbs quicklook')
-plt.imshow(np.mean(Qbs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qbs[isel:jsel,:,::-1]))
+plt.subplot(222)
+plt.title('b) Ql',loc='left')
+plt.imshow(np.mean(Ql[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=0.1,interpolation='none')
 plt.colorbar()
-print("Show Qbs")
+
+plt.subplot(223)
+plt.title('c) Qs',loc='left')
+plt.imshow(np.mean(Qs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qs[isel:jsel,:,::-1]),interpolation='none')
+plt.colorbar()
+
+plt.subplot(224)
+plt.title('d) Qbs',loc='left')
+plt.imshow(np.mean(Qbs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qbs[isel:jsel,:,::-1]),interpolation='none')
+plt.colorbar()
+plt.tight_layout()
+
+print("Show Mixing ratios")
 plt.show()
 
 

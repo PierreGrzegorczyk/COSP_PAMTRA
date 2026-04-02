@@ -31,7 +31,6 @@ subroutine gen_subcol_cld(npts, ncol, nlev, cf, alpha, cb, seed)
     ! local variables
     real, dimension(npts,ncol,nlev) :: x, rn1, rn2, rn3
     integer :: i, j, k
-
     ! initialize psuedo-random number generator
     if (seed /= 0) then
         print *, 'Initializing random seed from gen_subcol_cld'
