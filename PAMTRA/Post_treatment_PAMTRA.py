@@ -2,15 +2,27 @@ from netCDF4 import Dataset
 import matplotlib.pylab as plt
 import numpy as np
 
-## config parameters
+#_________LMDZ data___________________
+nc_file = '../Cosp_input_from_LMDZ.nc'
+nc_data = Dataset(nc_file, "r")
+
+time = nc_data.variables['time_counter'][:]
+nc_data.close()
+
+end = 'end'
+jsel=end
 isel=0
-jsel=1
+
+if jsel == end:
+    jsel = len(time)
+
+## config parameters
 
 Run_pamtra=True
 Run_spectra=False
 Write_output=True
 
-output_file = "../output/Prof_sensi_100_var_overlap.nc"
+output_file = "../output/BENCH_exclude_new.nc"
 output_file2 = output_file[:-3]+"_upward_part.nc"
 
 if "Ground"=="Aircraft" and "up"=='both' and Write_output==True:

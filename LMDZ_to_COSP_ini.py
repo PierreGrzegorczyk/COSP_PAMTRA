@@ -12,6 +12,8 @@ import numpy as np
 
 
 ok_bs={blowing_snow}
+ok_poprecip={precip_adj}
+ok_conv={convection}
 # ___________________________________________
 
 ## Path and data input
@@ -39,9 +41,22 @@ pres=nc_data.variables["pres"][:].reshape(npoint,npres)
 pres=pres.T
 
 # Input variables needed for cosp
-var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
+var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
+
+
 if ok_bs==True:
-    var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter','qbs'] #don't forget pres
+    var_list.append('qbs')
+
+if ok_poprecip==True:
+    var_list.append('pfraclr')
+    var_list.append('pfracld')
+
+if ok_conv==True:
+    var_list.append('rnebcon')
+    var_list.append('pr_con_i')
+    var_list.append('pr_con_l')
+    var_list.append('clwcon')
+
 
 for var in var_list:
     globals()[var]=nc_data.variables[var][:]
@@ -57,51 +72,6 @@ if len(lon)==1: #fix 1D profile
 else: #moving 1D profile (e.g. aircraft)
     lon = nc_data.variables['lon'][:]
     lat = nc_data.variables['lat'][:]
-
-
-## read variables to check the dataset
-
-# pres = nc_data.variables["pres"][:]
-#
-# T = nc_data.variables['temp'][:]
-# RH=nc_data.variables['rhl'][:]
-# p=nc_data.variables['pres'][:]
-# z=nc_data.variables['zfull'][:]
-# t=nc_data.variables['time_counter'][:]
-# zhalf=nc_data.variables['zhalf'][:]
-#
-# pr_lsc_i=nc_data.variables['pr_lsc_i'][:] #Large scale precipitation snow
-# pr_lsc_l=nc_data.variables['pr_lsc_l'][:] #Large scale precipitation rain
-#
-# ref_liq=nc_data.variables['ref_liq'][:] #Cloud droplet effective radius
-# ref_ice=nc_data.variables['ref_ice'][:] #Ice particle effective radius
-#
-# oliq=nc_data.variables['oliq'][:] #ql
-# ocond=nc_data.variables['ocond'][:] #ql+qi
-# oice=nc_data.variables['oice'][:] #qi
-#
-# frac_ls=nc_data.variables['rneb'][:] #cloud fraction
-#
-# RHL=nc_data.variables['rhl'][:] #RH wrt liq
-# RHI=nc_data.variables['rhi'][:] #RH wrt ice
-#
-# Qv = nc_data.variables['q2m'][:][:,0]
-#
-# RHl = nc_data.variables['rhl'][:][:,0]
-# RHi = nc_data.variables['rhi'][:][:,0]
-# RHi = nc_data.variables['rhi'][:][:,0]
-#
-# pfraclr = nc_data.variables['pfraclr'][:,:,0,0] # Precipitation fraction in clear sky
-# pfracld = nc_data.variables['pfracld'][:,:,0,0] # Precipitation fraction in cloudy sky
-#
-# cmap = plt.get_cmap('jet', 50)
-# cmap.set_under('white')
-#
-#
-#
-# #Some data have to be set to 0 for input in COSP (could also be chnaged in COSP but require some important changes in COSP code...)
-# pr_con_i=np.zeros(np.shape(pr_lsc_i)) #Convective precipitation snow: set to 0
-# pr_con_l=np.zeros(np.shape(pr_lsc_l)) #Convective precipitation rain: set to 0
 
 
 ## Create .nc input for COSP
@@ -173,7 +143,7 @@ create_var("rh", "f4", ("level", "point"),rhl)
 create_var("tke", "f4", ("level", "point"),tke)
 
 #tke
-create_var("tke_dissip", "f4", ("level", "point"),tke_dissip) 
+create_var("tke_dissip", "f4", ("level", "point"),tke_dissip)
 
 
 #vertical wind speed
@@ -186,30 +156,58 @@ create_var("vitv", "f4", ("level", "point"),vitv)
 # cloud fraction
 
 create_var("tca", "f4", ("level", "point"),rneb)
-create_var("cca", "f4", ("level", "point"),np.zeros(np.shape(rneb))) #convective variable which needs to be set to 0
-create_var("precip_frac", "f4", ("level","point"), pfraclr+pfracld) #in cloud + clear sky precipitation fraction from the new physics
-create_var("precip_fracclr", "f4", ("level","point"), pfraclr) #in cloud + clear sky precipitation fraction from the new physics
 
-# === 4. CLOUD WATER & ICE CONTENTS ===
+if ok_poprecip==True:
+    create_var("precip_frac", "f4", ("level","point"), pfraclr+pfracld) #in cloud + clear sky precipitation fraction from the new physics
+    create_var("precip_fracclr", "f4", ("level","point"), pfraclr) #in cloud + clear sky precipitation fraction from the new physics
+
+# === 4. LS CLOUD WATER & ICE CONTENTS ===
 
 create_var("mr_lsliq", "f4", ("level", "point"),oliq)
 create_var("mr_lsice", "f4", ("level", "point"),oice)
+
 if ok_bs==True:
     create_var("mr_bs", "f4", ("level", "point"),qbs)
 else:
     create_var("mr_bs", "f4", ("level", "point"),np.zeros(np.shape(oliq)))
 
-create_var("mr_ccliq", "f4", ("level", "point"),np.zeros(np.shape(oliq))) #no convective clouds
-create_var("mr_ccice", "f4", ("level", "point"),np.zeros(np.shape(oliq))) #no convective clouds
-
-
-# === 5. PRECIPITATION FLUXES ===
+# === 5. LS PRECIPITATION FLUXES ===
 
 create_var("fl_lsrain", "f4", ("level", "point"),pr_lsc_l)
 create_var("fl_lssnow", "f4", ("level", "point"),pr_lsc_i)
 
-create_var("fl_ccrain", "f4", ("level", "point"),np.zeros(np.shape(pr_lsc_i)))
-create_var("fl_ccsnow", "f4", ("level", "point"),np.zeros(np.shape(pr_lsc_i)))
+
+# === 5. CONV CLOUD AND PRECIP ===
+
+
+if ok_conv==True:
+    create_var("fl_ccrain", "f4", ("level", "point"),pr_con_l)
+    create_var("fl_ccsnow", "f4", ("level", "point"),pr_con_i)
+    create_var("cca", "f4", ("level", "point"),rnebcon) #Convetice cloud fraction
+
+    #Liq and ice fraction from Madeleine et al. (2020) paper about clouds in LMDZ
+    Tmin=273.15-30
+    Tmax=273.15
+    n=0.5
+
+    xliq=((temp-Tmin)/(Tmax-Tmin))**n
+    xliq=np.array(xliq,dtype=float)
+    xliq[temp<Tmin]=0.
+    xliq[temp>Tmax]=1.
+    oliq_conv=clwcon*xliq*rnebcon
+    oice_conv=clwcon*(1-xliq)*rnebcon
+
+    create_var("mr_ccliq", "f4", ("level", "point"),oliq_conv)
+    create_var("mr_ccice", "f4", ("level", "point"),oice_conv)
+else:
+    create_var("fl_ccrain", "f4", ("level", "point"),np.zeros(np.shape(pr_lsc_i)))
+    create_var("fl_ccsnow", "f4", ("level", "point"),np.zeros(np.shape(pr_lsc_i)))
+    create_var("cca", "f4", ("level", "point"),np.zeros(np.shape(rneb)))
+    create_var("mr_ccliq", "f4", ("level", "point"),np.zeros(np.shape(oliq)))
+    create_var("mr_ccice", "f4", ("level", "point"),np.zeros(np.shape(oliq)))
+
+
+
 create_var("fl_lsgrpl", "f4", ("level", "point"),np.zeros(np.shape(pr_lsc_i)))
 
 
@@ -249,11 +247,12 @@ for v in ["dtau_s", "dtau_c", "dem_s", "dem_c"]:
 
 
 array2=np.zeros((n_hydro,npres,npoint))
-array2[:,:,:]=1e-30
-# array2[0,:,:]=ref_liq*1e-6
-# array2[1,:,:]=ref_ice*1e-6
-# array2[2,:,:]=0.5/1000
-# array2[3,:,:]=1/1000
+#array2[:,:,:]=1e-30
+array2[0,:,:]=ref_liq*1e-6
+array2[1,:,:]=ref_ice*1e-6
+array2[2,:,:]=0.5/1000
+array2[3,:,:]=1/1000
+array2[9,:,:]=50*1e-6#1/1000
 
 create_var("Reff", "f4", ("hydro", "level", "point"),array2)
 
@@ -299,6 +298,17 @@ newnc = "Cosp_input_from_LMDZ.nc"
 newnc = Dataset(newnc, "r")
 
 
+#______auto input of array length________
+npoint = len(lon)
+
+with open("COSP/driver/run/cosp2_input_ini2.txt", "r") as f:
+    content = f.read()
+
+
+content = content.replace("NPOINTS=npoint", f"NPOINTS="+str(npoint))
+# Write back
+with open("COSP/driver/run/cosp2_input.txt", "w") as f:
+    f.write(content)
 #
 #
 # ## just one plot to check the dataset

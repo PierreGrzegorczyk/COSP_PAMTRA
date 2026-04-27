@@ -15,10 +15,13 @@ blowing_snow: False
 # nsubcol : number of subcolumns used by COSP
 # nz      : number of vertical levels
 
-nsubcol: 100
+nsubcol: 50
 nz: 95
 
-precip_adj: True #TURN ON for the new precip scheme: activate the precip adjustment of Hillman et al. (2018) based on the model precip fraction
+blowing_snow: False #TURN ON when using blowing snow of Vignon et al. (2026)
+precip_adj: True #TURN ON for POPRECIP the new precip scheme of LMDZ: it  activate the precip adjustment of Hillman et al. (2018) based on the model precip fraction
+convection: True #If you consider convective clouds of LMDZ
+
 exp_rand: False  #TURN OFF for coherence with LMDZ: activate the max_random overlap from Raisanen et al. (2004) generator
 sub_var: False  #TURN OFF for coherence with LMDZ: activate the subgrid variability across the subcolumns based on the Raisanen et al. (2004) generator
 
@@ -43,7 +46,11 @@ Altitude_sat: 390000
 Aircraft_alt_file: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/Flight_altitude.nc'
 Pointing: "up" #up,down,both
 
-PamtraVerbose: 1
+PamtraVerbose: 1 #Verbosity of PAMTRA
+pp_deltaX: 4    #4 profiles in X per worker
+pp_deltaY: 2    #2 profile in Y per worker
+
+  
 # isel and jsel define a subset of points to process.
 # Allows you to run the simulator for a part of the dataset.
 # This is especially useful when npoint is large: 
@@ -69,6 +76,6 @@ Write_output: True #True #True   # Write or not .nc output
 
 
   #FOUTPUTpamtra: "../Ouput_golden_case_D17_MIRAv6_ssrga_spectra_Ka.nc"
-FOUTPUTpamtra: "../output/Prof_sensi_100.nc"
+FOUTPUTpamtra: "../output/CONV.nc"
 
 #FOUTPUTpamtra: "../NAWDIC.nc"

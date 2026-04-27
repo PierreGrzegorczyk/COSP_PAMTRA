@@ -1,5 +1,5 @@
 import yaml
-with open("config_test.yaml") as f:
+with open("config_test_conv.yaml") as f:
     config = yaml.safe_load(f)
 
 
@@ -26,7 +26,7 @@ with open("COSP/driver/run/cosp2_input_ini2.txt", "w") as f:
 #with open("PAMTRA/PAMTRA_lmdz_MRR_ini.py") as f:
 #with open("PAMTRA/PAMTRA_lmdz_MIRA35C_ini.py") as f:
 #with open("PAMTRA/PAMTRA_lmdz_BASTA_ini.py") as f:
-with open("PAMTRA/PAMTRA_lmdz_global_ini_test.py") as f:
+with open("PAMTRA/PAMTRA_lmdz_global_ini.py") as f:
     template = f.read()
 
 output = template.format(**config)

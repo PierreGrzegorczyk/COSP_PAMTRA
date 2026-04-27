@@ -1,0 +1,86 @@
+# ==================================================
+# 1D Input File from LMDZ
+# ==================================================
+# Path to the 1D LMDZ NetCDF file used as input.
+
+#LMDZ_output1D: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v9/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc'
+LMDZ_output1D: '/home/grzegorc/AWACA/COSP_PAMTRAdev/Bench_conv.nc'
+#LMDZ_output1D: '/home/grzegorc/AWACA/EARTHCARE/LMDZ_traj1.nc'
+
+# ==================================================
+# Specify which physics is used
+# ==================================================
+
+blowing_snow: False #TURN ON when using blowing snow of Vignon et al. (2026)
+precip_adj: False #TURN ON for POPRECIP the new precip scheme of LMDZ: it  activate the precip adjustment of Hillman et al. (2018) based on the model precip fraction
+convection: True #False #True #If you consider convective clouds of LMDZ
+# ==================================================
+# COSP Parameters
+# ==================================================
+# nsubcol : number of subcolumns used by COSP
+# nz      : number of vertical levels
+
+nsubcol: 30
+nz: 39 #95
+
+exp_rand: False  #TURN OFF for coherence with LMDZ: activate the max_random overlap from Raisanen et al. (2004) generator
+sub_var: False  #TURN OFF for coherence with LMDZ: activate the subgrid variability across the subcolumns based on the Raisanen et al. (2004) generator
+
+
+# Output NetCDF file produced by COSP
+# (An additional COSP output file is generated internally and later read by PAMTRA.)
+FOUTPUTcosp: '../data/my_outputs/Output_COSP.nc'
+# ==================================================
+# PAMTRA Parameters
+# ==================================================
+
+Where_is_radar: 'Ground' #Ground,Aicraft, Sat
+
+# ##### For ground based radar 
+Altitude_obs: 0.
+
+# ##### For Sat 
+Altitude_sat: 390000 #Earthcare
+
+# ##### for aircraft
+Aircraft_alt_file: '/home/grzegorc/AWACA/LMDZ/OUT_golden_case_v8/Flight_altitude.nc'
+Pointing: "up" #up,down,both
+
+PamtraVerbose: 1 #Verbosity of PAMTRA
+pp_deltaX: 4    #4 profiles in X per worker
+pp_deltaY: 2    #2 profile in Y per worker
+  
+  
+# isel and jsel define a subset of points to process.
+# Allows you to run the simulator for a part of the dataset.
+# This is especially useful when npoint is large: 
+
+isel: 0 #864 #1114 #288 starting index of the selection: should be smaller than jsel
+jsel: -1 #1728 #134 #576 ending index of the selection: should be smaller than npoint 
+
+### RADAR CONFIGURATION
+
+# USING PREDEFINED RADAR CHARACTERISTICS 
+
+#Scattering names: Ori2021_mix_column_dendrites,Ori2021_rimed_aggregate_dendrites,Hogan2017_v1_aggregate_bullet_rosettes,Hogan2017_v2_aggregate_bullet_rosettes
+Scattering: 'Ori2021_mix_column_dendrites' #Ice particle type for SSRGA: 
+Radar_type: 'BASTA'                        #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C; EarthCARE_cpr 
+
+# CUSTOM RADAR
+
+custom_radar: True  #False  #if you want another noise level that the one set to the instrument inside PAMTRA python script
+freq: 95.0          #radar frequency in GHz
+Beam_width: 0.8     #Beam width of the radar
+Ze_noise_1km: -200  #noise level at 1 km
+dt: 9               #time resolution
+Vnyq: 10            #Nyquiest velocity in m s-1
+nfft: 512           #number of FFT points (i.e. number of bins in the radar spectra)
+
+### Pamtra running parameters
+Run_pamtra: True      # If False, PAMTRA execution is skipped: useful for debugging
+Run_parall: True      # Enable parallel processing (faster execution), necessary for doppler spectra
+Run_spectra: False    # Compute Doppler spectra (increases a lot the computation time)
+Write_output: True    #True   # Write or not .nc output
+
+
+FOUTPUTpamtra: "../output/BENCH_exclude.nc"

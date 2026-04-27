@@ -2,9 +2,21 @@ from netCDF4 import Dataset
 import matplotlib.pylab as plt
 import numpy as np
 
-## config parameters
-isel={isel}
+#_________LMDZ data___________________
+nc_file = '../Cosp_input_from_LMDZ.nc'
+nc_data = Dataset(nc_file, "r")
+
+time = nc_data.variables['time_counter'][:]
+nc_data.close()
+
+end = 'end'
 jsel={jsel}
+isel={isel}
+
+if jsel == end:
+    jsel = len(time)
+
+## config parameters
 
 Run_pamtra={Run_pamtra}
 Run_spectra={Run_spectra}

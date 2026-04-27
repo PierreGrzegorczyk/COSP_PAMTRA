@@ -1,5 +1,9 @@
 import yaml
-with open("config.yaml") as f:
+import sys
+
+config_file = sys.argv[1]
+
+with open(config_file) as f:
     config = yaml.safe_load(f)
 
 
@@ -19,7 +23,7 @@ with open("COSP/driver/run/cosp2_input_ini.txt") as f:
 
 output = template.format(**config)                      
 
-with open("COSP/driver/run/cosp2_input.txt", "w") as f:
+with open("COSP/driver/run/cosp2_input_ini2.txt", "w") as f:
     f.write(output)
 
 #_________________PAMTRA_________________

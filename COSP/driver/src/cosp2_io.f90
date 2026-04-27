@@ -2255,6 +2255,7 @@ contains
           else
              call map_ll_to_point(Na,Nb,Npoints,x3=x3,y2=fl_ccsnow)
           endif
+
        case ('dtau_s')
           if (Lpoint) then
              dtau_s(1:Npoints,:) = x2(1:Npoints,1:Nlevels)

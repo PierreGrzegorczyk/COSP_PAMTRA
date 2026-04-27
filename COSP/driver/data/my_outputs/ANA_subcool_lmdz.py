@@ -13,7 +13,11 @@ import pandas as pd
 ## Output from cosp
 nc_out = "/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs/Output_COSP.nc"
 nc_out = Dataset(nc_out, "r")
+
 z=np.array(nc_out.variables['lev'][:])/1000
+
+
+
 
 # ## vertical grid lmdz
 #
@@ -23,8 +27,8 @@ z=np.array(nc_out.variables['lev'][:])/1000
 #
 # z=np.array(nc_data.variables['zfull'][:][0,:,0,0])/1000
 
-nb_subcol=100
-subcol_grid=1+np.arange(0,100,1)
+nb_subcol=30
+subcol_grid=1+np.arange(0,30,1)
 ## Cloud
 path="/home/grzegorc/AWACA/COSP_PAMTRA/COSP/driver/data/my_outputs/"
 path="/home/grzegorc/AWACA/COSP/COSPv2.0_lmdz/driver/data/my_outputs/"
@@ -103,7 +107,7 @@ for i, (ax, arr, title,label) in enumerate(zip(axes, arrays, titles,labels)):
     ax.set_ylim(0,14)
 plt.suptitle("Cloud and precip subcolumns", fontsize=14, fontweight='bold')
 plt.tight_layout(rect=[0, 0, 1, 0.95])
-plt.savefig(path+"subgrid_mr.png",dpi=600)
+# plt.savefig(path+"subgrid_mr.png",dpi=600)
 
 
 
@@ -134,41 +138,105 @@ Ql=nc_data['I_LSCLIQ'][:]
 Qr=nc_data['I_LSRAIN'][:]
 Qs=nc_data['I_LSSNOW'][:]
 
+Qi_conv=nc_data['I_CVCICE'][:]
+Ql_conv=nc_data['I_CVCLIQ'][:]
+Qr_conv=nc_data['I_CVRAIN'][:]
+Qs_conv=nc_data['I_CVSNOW'][:]
+
 
 id=0
-x=np.arange(0,100,1)
+x=np.arange(0,30,1)
 
-plt.figure('test',figsize=(10,4))
+cmap = plt.get_cmap('jet', 50)
 
-plt.subplot(131)
-plt.title('Ice')
-plt.pcolormesh(x,z,Qi[:,:,id]*1000)
-plt.colorbar(label='Mixing ratio g kg$^{-1}$')
-plt.xlabel('Subcolumn number')
-plt.ylabel('Altitude (km)')
-plt.ylim(0,8)
+cmap.set_under('white')
+vmax=1
+vmin=0.01
 
-Qs_no_correction=np.zeros(np.shape(Qs[:,:,id]))
-for i in range(0,30,1):
-    Qs_no_correction[:,i]=np.mean(Qs[:,:,id],1)
+id=0
+for id in x:
 
-plt.subplot(132)
-plt.title('Snow (no correction)')
-plt.pcolormesh(x,z,Qs_no_correction[:,:]*1000)
-plt.xlabel('Subcolumn number')
-plt.ylabel('Altitude (km)')
-plt.colorbar(label='Mixing ratio g kg$^{-1}$')
-plt.ylim(0,8)
-plt.tight_layout()
+    plt.figure('LS'+str(id),figsize=(10,8))
+
+    plt.subplot(221)
+    plt.title('Ice')
+    plt.pcolormesh(x,z,Qi[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.ylim(0,15)
 
 
-plt.subplot(133)
-plt.title('Snow (Hillman correction)')
-plt.pcolormesh(x,z,Qs[:,:,id]*1000)
-plt.xlabel('Subcolumn number')
-plt.ylabel('Altitude (km)')
-plt.colorbar(label='Mixing ratio g kg$^{-1}$')
-plt.ylim(0,8)
-plt.tight_layout()
-plt.savefig(path+'Precip_subcol_example.png',dpi=600)
-plt.show()
+    plt.subplot(222)
+    plt.title('Liq')
+    plt.pcolormesh(x,z,Ql[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+    plt.ylim(0,15)
+    plt.tight_layout()
+
+
+    plt.subplot(223)
+    plt.title('Snow')
+    plt.pcolormesh(x,z,Qs[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+    plt.ylim(0,15)
+
+
+    plt.subplot(224)
+    plt.title('Rain')
+    plt.pcolormesh(x,z,Qr[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+
+    plt.ylim(0,15)
+    plt.tight_layout()
+    # plt.savefig(path+'Precip_subcol_example.png',dpi=600)
+    plt.show()
+
+
+
+for id in x:
+
+    plt.figure('CONV'+str(id),figsize=(10,8))
+
+    plt.subplot(221)
+    plt.title('Ice')
+    plt.pcolormesh(x,z,Qi_conv[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.ylim(0,15)
+
+    plt.subplot(222)
+    plt.title('Liq')
+    plt.pcolormesh(x,z,Ql_conv[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+    plt.ylim(0,15)
+    plt.tight_layout()
+
+    plt.subplot(223)
+    plt.title('Snow')
+    plt.pcolormesh(x,z,Qs_conv[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+    plt.ylim(0,15)
+
+    plt.subplot(224)
+    plt.title('Rain')
+    plt.pcolormesh(x,z,Qr_conv[:,:,id]*1000,vmax=vmax,vmin=vmin,cmap=cmap)
+    plt.xlabel('Subcolumn number')
+    plt.ylabel('Altitude (km)')
+    plt.colorbar(label='Mixing ratio g kg$^{-1}$')
+
+    plt.ylim(0,15)
+    plt.tight_layout()
+    # plt.savefig(path+'Precip_subcol_example.png',dpi=600)
+    plt.show()

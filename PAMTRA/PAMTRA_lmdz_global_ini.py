@@ -51,6 +51,13 @@ Ql=nc_data['I_LSCLIQ'][:][::-1,:,:]
 Qr=nc_data['I_LSRAIN'][:][::-1,:,:]
 Qs=nc_data['I_LSSNOW'][:][::-1,:,:]
 Qbs=nc_data['I_BS'][:][::-1,:,:]
+
+Qi_cv=nc_data['I_CVCICE'][:][::-1,:,:]
+Ql_cv=nc_data['I_CVCLIQ'][:][::-1,:,:]
+Qr_cv=nc_data['I_CVRAIN'][:][::-1,:,:]
+Qs_cv=nc_data['I_CVSNOW'][:][::-1,:,:]
+
+
 ncol=np.shape(Qs)[1]
     
 Qi=np.transpose(Qi, (2, 1, 0))
@@ -58,6 +65,16 @@ Qs=np.transpose(Qs, (2, 1, 0))
 Qbs=np.transpose(Qbs, (2, 1, 0))
 Qr=np.transpose(Qr, (2, 1, 0))
 Ql=np.transpose(Ql, (2, 1, 0))
+
+Qi_cv=np.transpose(Qi_cv, (2, 1, 0))
+Qs_cv=np.transpose(Qs_cv, (2, 1, 0))
+Ql_cv=np.transpose(Ql_cv, (2, 1, 0))
+Qr_cv=np.transpose(Qr_cv, (2, 1, 0))
+
+Qi+=Qi_cv
+Ql+=Ql_cv
+Qr+=Qr_cv
+Qs+=Qs_cv
 
 #_________format the shape of data_____
 
@@ -109,32 +126,68 @@ pam = pyPamtra.pyPamtra()
 pamData = dict()
 
 #Index for data selection
+end = 'end'
 jsel={jsel}
 isel={isel}
 
+if jsel == end:
+    jsel = len(time) 
 #________________Quicklook for data before running__________________
 
-plt.figure('Qs quicklook',figsize=(14,6))
+plt.figure('Input mixing ratios',figsize=(14,6))
 plt.subplot(221)
-plt.title('a) Qi',loc='left')
+plt.title('a) Q ice',loc='left')
 plt.imshow(np.mean(Qi[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qi[isel:jsel,:,::-1]),interpolation='none')
 plt.colorbar()
 
 plt.subplot(222)
-plt.title('b) Ql',loc='left')
-plt.imshow(np.mean(Ql[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=0.1,interpolation='none')
+plt.title('b) Q liquid',loc='left')
+plt.imshow(np.mean(Ql[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Ql[isel:jsel,:,::-1]),interpolation='none')
 plt.colorbar()
 
 plt.subplot(223)
-plt.title('c) Qs',loc='left')
+plt.title('c) Q Snow',loc='left')
 plt.imshow(np.mean(Qs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qs[isel:jsel,:,::-1]),interpolation='none')
 plt.colorbar()
 
 plt.subplot(224)
-plt.title('d) Qbs',loc='left')
-plt.imshow(np.mean(Qbs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qbs[isel:jsel,:,::-1]),interpolation='none')
+plt.title('d) Q rain',loc='left')
+plt.imshow(np.mean(Qr[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qr[isel:jsel,:,::-1]),interpolation='none')
 plt.colorbar()
 plt.tight_layout()
+
+
+if {convection}==True:
+    plt.figure('Input convective mixing ratios',figsize=(14,6))
+    plt.subplot(221)
+    plt.title('a) Q ice',loc='left')
+    plt.imshow(np.mean(Qi_cv[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qi_cv[isel:jsel,:,::-1]),interpolation='none')
+    plt.colorbar()
+
+    plt.subplot(222)
+    plt.title('b) Q liquid',loc='left')
+    plt.imshow(np.mean(Ql_cv[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Ql_cv[isel:jsel,:,::-1]),interpolation='none')
+    plt.colorbar()
+
+    plt.subplot(223)
+    plt.title('c) Q Snow',loc='left')
+    plt.imshow(np.mean(Qs_cv[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qs_cv[isel:jsel,:,::-1]),interpolation='none')
+    plt.colorbar()
+
+    plt.subplot(224)
+    plt.title('d) Q conv rain',loc='left')
+    plt.imshow(np.mean(Qr_cv[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qr_cv[isel:jsel,:,::-1]),interpolation='none')
+    plt.colorbar()
+    plt.tight_layout()
+
+if {blowing_snow}==True:
+    plt.figure('Blowing snow',figsize=(6.5,3))
+    plt.title('Q blowing snow',loc='left')
+    plt.imshow(np.mean(Qbs[isel:jsel,:,::-1],1).T*1000,aspect='auto',cmap="jet",vmin=0.01,vmax=1000*np.nanmax(Qbs[isel:jsel,:,::-1]),interpolation='none')
+    plt.colorbar()
+    plt.tight_layout()
+
+
 
 print("Show Mixing ratios")
 plt.show()
@@ -163,6 +216,11 @@ plt.xlabel('$\epsilon$ $m^2$ $s-2$')
 plt.xlim(1e-2,1e2)
 plt.xscale('log')
 plt.ylabel('Altitude (km)')
+
+## Add convetive content to large scale content
+
+
+
 
 #_______ssrga scattering parameters (see the table of Billault-Roux and Berne 2025)
 #kappa_beta_gamma_zeta
@@ -194,14 +252,13 @@ pam.df.addHydrometeor(("liq", 1., 1, Rho_liq, -99., -99., -99., -99. , 3, 1, "mo
 ##___Rain_properties___
 
 r_rain=0.0005
-rain_fallspeed=4.
 Rho_rain=1000.
 N_rain=q_hydro[isel:jsel,:,:,id_rain]/(Rho_rain*4/3*np.pi*r_rain**3)
 pam.df.addHydrometeor(("rain",1.,  1 , Rho_rain , -99., -99., -99., -99. , 3, 1, "mono",-99.0, -99.0, -99.0, -99.0,2*r_rain,-99.0,"mie-sphere","lmdz_rain", 0.))
+#pam.df.addHydrometeor(("rain",1.,  1 , Rho_rain , -99., -99., -99., -99. , 3, 1, "mono",-99.0, -99.0, -99.0, -99.0,2*r_rain,-99.0,"khvorostyanov01_drops","lmdz_rain", 0.))
 
 ##___Snow_properties___
 r_snow=0.001
-snow_fallspeed=1.
 Rho_snow = 1.e3 * 0.178 * ( r_snow * 2 * 1000. )**(-0.922)
 N_snow=(q_hydro[isel:jsel,:,:,id_snow]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
 
@@ -212,7 +269,6 @@ pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,
 ##___Blowing_snow_properties___
 r_bs=50e-6
 AR_bs=1.
-bs_fallspeed=0.5
 Rho_bs = 917.
 N_bs=(q_hydro[isel:jsel,:,:,id_bs]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
 
@@ -220,7 +276,6 @@ pam.df.addHydrometeor(("bs",AR_bs, -1 , Rho_bs, -99., -99., np.pi/4., 2. ,  3 ,1
 
 print("pam.df",pam.df)
 ##___Ice_properties___
-
 Rho_ice=917.
 AR_ice=1.#
 r_ice=1e-6*(45.8966*(Qi*Rho_air*1e3)**0.2214 + 0.7957*(Qi*Rho_air*1e3)**0.2535*(T - 273.15 + 190.))/2 #as in lmdz physics from Sun and Rikus 1999
@@ -236,10 +291,8 @@ for i in range(len(D_ice_bins_center)):
     id_ice=i+4
     q_hydro[:,:,:,id_ice]=Qi_tmp
 
-
-
-    pam.df.addHydrometeor(("ic"+str(i), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs), "heymsfield10_particles",0.))
-    #pam.df.addHydrometeor(("ice"+str(D_ice_bins_center[i]), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "mie-sphere", "heymsfield10_particles",0.))
+    #pam.df.addHydrometeor(("ic"+str(i), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs), "heymsfield10_particles",0.))
+    pam.df.addHydrometeor(("ic"+str(D_ice_bins_center[i]), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "mie-sphere", "heymsfield10_particles",0.))
 # Data input
 pamData["lon"] = lon[isel:jsel,:]
 pamData["lat"] = lat[isel:jsel,:]
@@ -312,8 +365,15 @@ if Radar_type=='EarthCARE_cpr':
     time_resolution=0.67
     Noise_factor=-2
 
-if {adjust_noise}==True:
+if {custom_radar}==True:
+    freq={freq}
+    v_max={Vnyq}
+    nfft={nfft}
     Z_noise={Ze_noise_1km}
+    Beam_width={Beam_width}
+    time_resolution={dt}
+    Noise_factor=-2
+
 #__________namelist___________
 
 if "{Where_is_radar}"=="Ground":

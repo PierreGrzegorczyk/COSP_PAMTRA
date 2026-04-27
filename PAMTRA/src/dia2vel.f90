@@ -109,7 +109,8 @@ module dia2vel
       err = success
 
       !fall speed: small variation of boundaries for non infinite dD_dU
-      velSpec = vrain_lmdz*(0.5 * diaSpec_SI / maxval(diaSpec_SI)+0.5 * diaSpec_SI / minval(diaSpec_SI))
+      !velSpec = vrain_lmdz*(0.5 * diaSpec_SI / maxval(diaSpec_SI)+0.5 * diaSpec_SI / minval(diaSpec_SI))
+      velSpec = [0.99*vrain_lmdz, 1.01*vrain_lmdz]
       errorstatus = err
       if (verbose >= 2) call report(info,'End of ', nameOfRoutine)
 

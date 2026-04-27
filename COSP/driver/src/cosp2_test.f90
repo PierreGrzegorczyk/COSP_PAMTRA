@@ -151,6 +151,9 @@ program cosp2_test
   logical ::                      & !
        use_vgrid,                 & ! Use fixed vertical grid for outputs?
        csat_vgrid,                & ! CloudSat vertical grid? 
+       precip_adj,                & ! Precip adjusment from Hillman et al (2018) base don the precip fraction (added by PG) 
+       exp_rand,                  & ! activate the max-random overlap from Raisanen et al. (2004) generator 
+       sub_var,                   & ! activate the subgrid variability across the subcolumns based on the Raisanen et al. (2004) generator 
        use_precipitation_fluxes     ! True if precipitation fluxes are input to the 
                                     ! algorithm 
 
@@ -170,7 +173,8 @@ program cosp2_test
        fileIN                       ! dinput+finput
   namelist/COSP_INPUT/overlap, isccp_topheight, isccp_topheight_direction, npoints,      &
        npoints_it, ncolumns, nlevels, use_vgrid, Nlvgrid, csat_vgrid, dinput, finput,    &
-       foutput, cloudsat_radar_freq, surface_radar, cloudsat_use_gas_abs,cloudsat_do_ray,&
+       foutput, precip_adj,exp_rand,sub_var,cloudsat_radar_freq, surface_radar,          & 
+       cloudsat_use_gas_abs, cloudsat_do_ray,                                            &
        cloudsat_k2, cloudsat_micro_scheme, lidar_ice_type, use_precipitation_fluxes,     &
        rttov_platform, rttov_satellite, rttov_Instrument, rttov_Nchannels,               &
        rttov_Channels, rttov_Surfem, rttov_ZenAng, co2, ch4, n2o, co
@@ -291,6 +295,7 @@ program cosp2_test
    integer :: ncid, ierr
    integer :: dimid_point, dimid_col, dimid_lev
    integer :: varid_LSCLIQ, varid_LSCICE, varid_BS,varid_LSRAIN, varid_LSSNOW
+   integer :: varid_CVCLIQ, varid_CVCICE,varid_CVRAIN, varid_CVSNOW,varid_FLA,varid_FLAG
    integer :: dimids(3)
 
    call cpu_time(driver_time(1))
@@ -501,8 +506,8 @@ program cosp2_test
      !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      ! Generate subcolumns and compute optical inputs.
      !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     call subsample_and_optics(nPtsPerIt,nLevels,nColumns,N_HYDRO,overlap,                     &
-          use_vgrid,use_precipitation_fluxes,lidar_ice_type,sd,                                &
+     call subsample_and_optics(nPtsPerIt,nLevels,nColumns,N_HYDRO,overlap,precip_adj,          &
+          exp_rand,sub_var,use_vgrid,use_precipitation_fluxes,lidar_ice_type,sd,               &
           tca(start_idx:end_idx,Nlevels:1:-1), precip_frac(start_idx:end_idx,Nlevels:1:-1),    &
           precip_fracclr(start_idx:end_idx,Nlevels:1:-1),cca(start_idx:end_idx,Nlevels:1:-1),  &
           fl_lsrain(start_idx:end_idx,Nlevels:1:-1),fl_lssnow(start_idx:end_idx,Nlevels:1:-1), &
@@ -553,20 +558,20 @@ contains
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
   ! SUBROUTINE subsample_and_optics
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
-  subroutine subsample_and_optics(nPoints, nLevels, nColumns, nHydro, overlap, use_vgrid,   &
-       use_precipitation_fluxes, lidar_ice_type, sd, tca, precip_frac, precip_fracclr,      &
-       cca, fl_lsrainIN, fl_lssnowIN,    &
+  subroutine subsample_and_optics(nPoints, nLevels, nColumns, nHydro, overlap, precip_adj,  &
+       exp_rand,sub_var,use_vgrid, use_precipitation_fluxes, lidar_ice_type, sd, tca,       & 
+       precip_frac, precip_fracclr, cca, fl_lsrainIN, fl_lssnowIN,                          &
        fl_lsgrplIN, fl_ccrainIN, fl_ccsnowIN, mr_lsliq, mr_lsice,mr_bs,mr_ccliq,mr_ccice,   &
        reffIN, dtau_c, dtau_s, dem_c, dem_s, cospstateIN, cospIN,zlev_half)
     ! Inputs
-    integer,intent(in) :: nPoints, nLevels, nColumns, nHydro, overlap, lidar_ice_type
+    integer,intent(in) :: nPoints, nLevels, nColumns, nHydro, overlap,lidar_ice_type
     real(wp),intent(in),dimension(nPoints,nLevels) :: tca,cca,mr_lsliq,mr_lsice,mr_bs, &
     mr_ccliq, mr_ccice,dtau_c,dtau_s,dem_c,dem_s,fl_lsrainIN,fl_lssnowIN,fl_lsgrplIN,fl_ccrainIN, &
     fl_ccsnowIN, precip_frac, precip_fracclr,zlev_half
     real(wp),intent(in),dimension(nPoints,nLevels,nHydro) :: reffIN
     logical,intent(in) :: use_vgrid ! .false.: outputs on model levels
                                     ! .true.:  outputs on evenly-spaced vertical levels.
-    logical,intent(in) :: use_precipitation_fluxes
+    logical,intent(in) :: use_precipitation_fluxes,precip_adj,exp_rand,sub_var
     type(size_distribution),intent(inout) :: sd
     
     ! Outputs
@@ -582,8 +587,8 @@ contains
     real(wp),dimension(:,:), allocatable :: &
          ls_p_rate, cv_p_rate, frac_ls, frac_cv, prec_ls, prec_cv,g_vol
     real(wp),dimension(:,:,:),  allocatable :: &
-         frac_prec, MODIS_cloudWater, MODIS_cloudIce, fracPrecipIce, fracPrecipIce_statGrid,&
-         MODIS_watersize,MODIS_iceSize, MODIS_opticalThicknessLiq,MODIS_opticalThicknessIce
+         frac_prec,frac_prec_ls,frac_prec_cv,MODIS_cloudWater, MODIS_cloudIce, fracPrecipIce, fracPrecipIce_statGrid,&
+         frac_out_ls,MODIS_watersize,MODIS_iceSize, MODIS_opticalThicknessLiq,MODIS_opticalThicknessIce
     real(wp),dimension(:,:,:,:),allocatable :: &
          mr_hydro, Reff, Np
     real(wp),dimension(nPoints,nLevels) :: &
@@ -597,6 +602,7 @@ contains
        !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
        ! RNG used for subcolumn generation
        allocate(rngs(nPoints),seed(nPoints))
+       allocate(frac_out_ls(nPoints,nColumns,nLevels))
        seed(:)=0
        seed = int(cospstateIN%phalf(:,Nlevels+1))  ! In case of NPoints=1
        ! *NOTE* Chunking will change the seed
@@ -623,13 +629,30 @@ contains
        enddo
 
 
-       ! Call scops
+       ! Subgrid generator
 
-       !For max-random 
+       if (exp_rand) then !R04 generator: exp-random hypothesis
+       call gen_subcol_cld(NPoints, Ncolumns, Nlevels, tca, alphac, cospIN%frac_out, 0)
+       print *, 'Generate subcolumns with exp-random hypothesis: R04 generator'
+
+       else
+       print *, 'Generate subcolumns with max-random hypothesis: SCOPS code'
+       frac_out_ls(:,:,:) = 0
+       call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca*0,overlap,cospIN%frac_out,0) !cca*0 deccorelate CV and LS clouds
+       !frac_out_ls(:,:,:) = 0
+       where (cospIN%frac_out(:,:,:) == 1)
+       frac_out_ls(:,:,:)=1.
+       end where
+
+       !frac_out_cv(:,:,:) = 0
+       cospIN%frac_out(:,:,:) = 0
        call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca,overlap,cospIN%frac_out,0)
 
-       !For exp-random 
-       call gen_subcol_cld(NPoints, Ncolumns, Nlevels, tca, alphac, cospIN%frac_out, 0)
+       !where (cospIN%frac_out(:,:,:) == 2)
+       !frac_out_cv(:,:,:) = 2
+       !end where
+
+       endif
 
        deallocate(seed,rngs)
        ! Sum up precipitation rates
@@ -641,29 +664,45 @@ contains
           ls_p_rate(:,1:nLevels) = 0 ! mixing_ratio(rain) + mixing_ratio(snow) + mixing_ratio (groupel)
           cv_p_rate(:,1:nLevels) = 0 ! mixing_ratio(rain) + mixing_ratio(snow)
        endif
-       
-       ! Call PREC_SCOPS
+
+       !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+       ! PRECIPITATION TREATMENT
+       !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
        allocate(frac_prec(nPoints,nColumns,nLevels))
+       allocate(frac_prec_ls(nPoints,nColumns,nLevels))
+       allocate(frac_prec_cv(nPoints,nColumns,nLevels))
+
        call prec_scops(nPoints,nLevels,nColumns,ls_p_rate,cv_p_rate,cospIN%frac_out,frac_prec)
        deallocate(ls_p_rate,cv_p_rate)
-       !print *, 'MAXVAL1', MAXVAL(cospIN%frac_out),MAXVAL(frac_prec)
 
-       !________________precip adjust from Hillman 2018: modified by pg_______________________
+       frac_prec_ls(:,:,:) = 0
+       frac_prec_cv(:,:,:) = 0
 
-       !do j=1,nPoints
-       !  do k=1,nLevels
-       !    call random_number(pfrac(j,k))
-       !    pfrac(j,k)=0.25+0.25*pfrac(j,k)+0.5*tca(j,k)
-       !    if (pfrac(j,k).gt.0.9*tca(j,k)) pfrac(j,k)=0.9*tca(j,k)
-       !    if (pfrac(j,k).lt.0.3) pfrac(j,k)=0.3
-       !pfrac(j,k)=0.8*tca(j,k)!precip_frac(j)*tca(j,k)
-       !     !pfrac(j,k)=precip_frac(j,k)
-       !    enddo
-       !enddo
+       !where (frac_prec(:,:,:) == 1 .or. frac_prec(:,:,:) == 2)
+       !    frac_prec_ls(:,:,:) = 1
+       !end where
+
+       where (frac_prec(:,:,:) == 2 .or. frac_prec(:,:,:) == 3)
+           frac_prec_cv(:,:,:) = 2
+       end where
+
+       !where (cospIN%frac_out(:,:,:) == 1)
+       !    frac_out_ls(:,:,:) = 1
+       !end where
 
 
-       !print *, "precip fraction jsel",pfrac(jsel,:)
-       call adjust_precip(nPoints,nColumns,nLevels,precip_frac,cospIN%frac_out,frac_prec,1, 0)
+       if (precip_adj) then
+       print *, 'Precip adjustment from Hillman et al. (2018)'
+       call adjust_precip(nPoints,nColumns,nLevels,precip_frac,frac_out_ls,frac_prec_ls,1, 0)
+
+       frac_prec(:,:,:) = 0
+       frac_prec(:,:,:) = frac_prec_cv(:,:,:)+frac_prec_ls(:,:,:)
+ 
+       where (frac_prec(:,:,:) == 4) ! yields 4 when both are present, which is then remapped to 2 
+           frac_prec(:,:,:) = 3
+       end where
+       endif
 
        !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
        ! Compute fraction in each gridbox for precipitation  and cloud type.
@@ -671,10 +710,6 @@ contains
        ! Allocate
        allocate(frac_ls(nPoints,nLevels),prec_ls(nPoints,nLevels),                       &
                 frac_cv(nPoints,nLevels),prec_cv(nPoints,nLevels))
-        !______ old plot__________
-       !open(unit=98, file='../data/my_outputs/Output_subcolumns.csv', status='unknown', action='write', position='append')
-       !open(unit=99, file='../data/my_outputs/Output_subcolumns_mratio.csv', status='unknown', action='write', position='append')
-       !jsel=1
        !___________________________
        ! Initialize
        frac_ls(1:nPoints,1:nLevels) = 0._wp
@@ -684,13 +719,8 @@ contains
        do j=1,nPoints
           do k=1,nLevels
              do i=1,nColumns
-                !_________Old plot added by PG________
-                !if (j.eq.jsel) then 
-                !if (i.eq.1.and.k.eq.1) write (98,*) "level,column,frac,fracprec" 
-                !write (98,*) 1,",",k,",",i,",",cospIN%frac_out(j,i,k),",",frac_prec(j,i,k)    
-                !endif
-                if (cospIN%frac_out(j,i,k)  .eq. 1)  frac_ls(j,k) = frac_ls(j,k)+1._wp
-                if (cospIN%frac_out(j,i,k)  .eq. 2)  frac_cv(j,k) = frac_cv(j,k)+1._wp
+                if (frac_out_ls(j,i,k) .eq. 1)  frac_ls(j,k) = frac_ls(j,k)+1._wp
+                if (cospIN%frac_out(j,i,k) .eq. 2)  frac_cv(j,k) = frac_cv(j,k)+1._wp
                 if (frac_prec(j,i,k) .eq. 1)  prec_ls(j,k) = prec_ls(j,k)+1._wp
                 if (frac_prec(j,i,k) .eq. 2)  prec_cv(j,k) = prec_cv(j,k)+1._wp
                 if (frac_prec(j,i,k) .eq. 3)  prec_cv(j,k) = prec_cv(j,k)+1._wp
@@ -719,16 +749,18 @@ contains
           ! Subcolumn cloud fraction
           column_frac_out = cospIN%frac_out(:,k,:)
           ! LS clouds
-          where (column_frac_out == I_LSC)
+          where (frac_out_ls(:,k,:) == I_LSC)
              mr_hydro(:,k,:,I_LSCLIQ) = mr_lsliq
              mr_hydro(:,k,:,I_LSCICE) = mr_lsice
              mr_hydro(:,k,:,I_BS) = mr_bs
              Reff(:,k,:,I_LSCLIQ)     = ReffIN(:,:,I_LSCLIQ)
              Reff(:,k,:,I_LSCICE)     = ReffIN(:,:,I_LSCICE)
              Reff(:,k,:,I_BS)     = ReffIN(:,:,I_LSCICE)
+          end where
+
           ! CONV clouds   
-          elsewhere (column_frac_out == I_CVC)
-             mr_hydro(:,k,:,I_CVCLIQ) = mr_ccliq
+          where (column_frac_out == I_CVC)
+             mr_hydro(:,k,:,I_CVCLIQ) = mr_ccliq 
              mr_hydro(:,k,:,I_CVCICE) = mr_ccice
              Reff(:,k,:,I_CVCLIQ)     = ReffIN(:,:,I_CVCLIQ)
              Reff(:,k,:,I_CVCICE)     = ReffIN(:,:,I_CVCICE)
@@ -763,7 +795,7 @@ contains
           do j=1,nPoints
              ! In-cloud mixing ratios.
              if (frac_ls(j,k) .ne. 0.) then
-                mr_hydro(j,:,k,I_LSCLIQ) = mr_hydro(j,:,k,I_LSCLIQ)/frac_ls(j,k)
+                mr_hydro(j,:,k,I_LSCLIQ) = mr_hydro(j,:,k,I_LSCLIQ)/frac_ls(j,k) 
                 mr_hydro(j,:,k,I_LSCICE) = mr_hydro(j,:,k,I_LSCICE)/frac_ls(j,k)
                 mr_hydro(j,:,k,I_BS) = mr_hydro(j,:,k,I_BS)/frac_ls(j,k)
              endif
@@ -828,12 +860,15 @@ contains
        mr_hydro(:,1,:,I_LSCICE) = mr_lsice
        mr_hydro(:,1,:,I_BS) = mr_bs
 
-       mr_hydro(:,1,:,I_CVCLIQ) = mr_ccliq
-       mr_hydro(:,1,:,I_CVCICE) = mr_ccice
+       mr_hydro(:,1,:,I_CVCLIQ) = mr_lsliq
+       mr_hydro(:,1,:,I_CVCICE) = mr_lsice
        Reff(:,1,:,:)            = ReffIN
     endif
 
-       !_______________in cloud mixing ratio variability from Hillman et al. 2018: added by pg_________________________
+
+    !_______________in cloud mixing ratio variability from RO4 generator of Hillman et al. 2018: added by pg_________________________
+    if (sub_var) then
+
        ! for ice
        call gen_subcol_var(nPoints,nColumns,nLevels,cospIN%frac_out, &
                           mr_lsice, mr_hydro(:,:,:,I_LSCICE),T, 0,rho_cld)
@@ -841,8 +876,10 @@ contains
        ! for snow
        call gen_subcol_var(nPoints,nColumns,nLevels,frac_prec, &
                           sum(mr_hydro(:,:,:,I_LSSNOW), dim=2) / real(nColumns), mr_hydro(:,:,:,I_LSSNOW),T, 0,rho_pre)
-       
-       deallocate(frac_prec)
+
+       print *, 'Generate subgrid variability from R04 generator' 
+
+    endif
 
      !!________Old plot added by PG_______________
      !do k=1,nLevels
@@ -879,8 +916,16 @@ contains
     ierr = nf90_def_var(ncid, "I_LSCLIQ", NF90_REAL, dimids, varid_LSCLIQ)
     ierr = nf90_def_var(ncid, "I_LSCICE", NF90_REAL, dimids, varid_LSCICE)
     ierr = nf90_def_var(ncid, "I_BS", NF90_REAL, dimids, varid_BS)
+
     ierr = nf90_def_var(ncid, "I_LSRAIN", NF90_REAL, dimids, varid_LSRAIN)
     ierr = nf90_def_var(ncid, "I_LSSNOW", NF90_REAL, dimids, varid_LSSNOW)
+
+    ierr = nf90_def_var(ncid, "I_CVCLIQ", NF90_REAL, dimids, varid_CVCLIQ)
+    ierr = nf90_def_var(ncid, "I_CVCICE", NF90_REAL, dimids, varid_CVCICE)
+
+    ierr = nf90_def_var(ncid, "I_CVRAIN", NF90_REAL, dimids, varid_CVRAIN)
+    ierr = nf90_def_var(ncid, "I_CVSNOW", NF90_REAL, dimids, varid_CVSNOW)
+    ierr = nf90_def_var(ncid, "PREC_FLAG", NF90_REAL, dimids, varid_FLAG)
 
     ierr = nf90_enddef(ncid)
 
@@ -891,13 +936,24 @@ contains
     ierr = nf90_put_var(ncid, varid_LSRAIN, mr_hydro(:, :, :, I_LSRAIN))
     ierr = nf90_put_var(ncid, varid_LSSNOW, mr_hydro(:, :, :, I_LSSNOW))
 
+    ierr = nf90_put_var(ncid, varid_CVCLIQ, mr_hydro(:, :, :, I_CVCLIQ))
+    ierr = nf90_put_var(ncid, varid_CVCICE, mr_hydro(:, :, :, I_CVCICE))
+
+    ierr = nf90_put_var(ncid, varid_CVRAIN, mr_hydro(:, :, :, I_CVRAIN))
+    ierr = nf90_put_var(ncid, varid_CVSNOW, mr_hydro(:, :, :, I_CVSNOW))
+    ierr = nf90_put_var(ncid, varid_FLAG, frac_prec(:, :, :))
+    !ierr = nf90_put_var(ncid, varid_FLAG, cospIN%frac_out(:, :, :)+frac_out_ls(:,:,:))
+
     ! === Close the file ===
+    print *, '_________________________________________________'
     ierr = nf90_close(ncid)
     if (ierr == nf90_noerr) then
        print *, "New output file for PAMTRA 'COSP_to_PAMTRA*.nc' written successfully in ../data/my_outputs/"
     else
        print *, "Error closing NetCDF file COSP_to_PAMTRA."
     end if
+
+    deallocate(frac_prec)
     !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     ! 11 micron emissivity
     !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

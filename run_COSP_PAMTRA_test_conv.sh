@@ -2,13 +2,14 @@ echo "_________________________________________________"
 echo "LOAD config.yaml : "
 echo "important parameters as input"
 echo "_________________________________________________"
-python3 my_config_init.py "$1"
+python3 my_config_init_test_conv.py
+
 
 echo "_________________________________________________"
 echo "RUN LMDZ_to_COSP.py : "
 echo "Read and write LMDZ data as .nc readable by COSP"
 echo "_________________________________________________"
-python3 LMDZ_to_COSP.py
+python3 LMDZ_to_COSP_test_conv.py
 
 echo "_________________________________________________"
 echo "START RUN COSP"

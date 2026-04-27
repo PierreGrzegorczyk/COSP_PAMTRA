@@ -9,7 +9,39 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
+# func
+
+
+def CFAD(Ze_mira, Alt_mira, Zmin, Zmax, step):
+
+    levels_W = np.arange(Zmin, Zmax + step, step)
+    n_alt = len(Alt_mira)
+    n_bins = len(levels_W)
+
+    cfad = np.zeros((n_alt, n_bins))
+
+    # Digitize once (vectorized)
+    bin_index = np.digitize(Ze_mira, levels_W)
+
+    # Remove values exactly equal to bin edges (to match strict < <)
+    mask_strict = ((Ze_mira > levels_W[0]) &
+        (Ze_mira < levels_W[-1]))
+
+    bin_index[~mask_strict] = -1
+
+    for k in range(n_alt):
+        valid = (bin_index[:, k] >= 0) & (bin_index[:, k] < n_bins)
+        cfad[k] = np.bincount(bin_index[valid, k],minlength=n_bins)
+
+    cfad_norm = cfad / (cfad.sum(axis=1, keepdims=True) + 1e-30)
+
+    return levels_W, cfad_norm
+
+
 ## Path and data input
+
+
+
 import csv
 plt.rcParams['font.size'] = 13
 
@@ -31,9 +63,11 @@ else:
     print("Ok for data shape")
 
 i_sel=1500
+j_sel=1600
+
 pres=nc_data.variables["pres"][:].reshape(npoint,npres)
 pres=pres.T
-pres=pres[:,i_sel]
+pres=pres[:,i_sel:j_sel]
 
 # Input variables needed for cosp
 var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pfraclr','pfracld','pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
@@ -53,30 +87,30 @@ else: #moving 1D profile (e.g. aircraft)
     lat = nc_data.variables['lat'][:]
 
 
-npoint = 1
+npoint = 100
 
-lon=lon[i_sel]
-lat=lat[i_sel]
-oliq=oliq[:,i_sel]
-oice=oice[:,i_sel]
-zfull=zfull[:,i_sel]
-zhalf=zhalf[:,i_sel]
-temp=temp[:,i_sel]
-rhl=rhl[:,i_sel]
-rneb=rneb[:,i_sel]
-pfraclr=pfraclr[:,i_sel]
-pfracld=pfracld[:,i_sel]
-pr_lsc_i=pr_lsc_i[:,i_sel]
-pr_lsc_l=pr_lsc_l[:,i_sel]
-ref_liq=ref_liq[:,i_sel]
-ref_ice=ref_ice[:,i_sel]
-ovap=ovap[:,i_sel]
-tke=tke[:,i_sel]
-tke_dissip=tke_dissip[:,i_sel]
-vitw=vitw[:,i_sel]
-vitu=vitu[:,i_sel]
-vitv=vitv[:,i_sel]
-time_counter=time_counter[i_sel]
+lon=lon[i_sel:j_sel]
+lat=lat[i_sel:j_sel]
+oliq=oliq[:,i_sel:j_sel]
+oice=oice[:,i_sel:j_sel]
+zfull=zfull[:,i_sel:j_sel]
+zhalf=zhalf[:,i_sel:j_sel]
+temp=temp[:,i_sel:j_sel]
+rhl=rhl[:,i_sel:j_sel]
+rneb=rneb[:,i_sel:j_sel]
+pfraclr=pfraclr[:,i_sel:j_sel]
+pfracld=pfracld[:,i_sel:j_sel]
+pr_lsc_i=pr_lsc_i[:,i_sel:j_sel]
+pr_lsc_l=pr_lsc_l[:,i_sel:j_sel]
+ref_liq=ref_liq[:,i_sel:j_sel]
+ref_ice=ref_ice[:,i_sel:j_sel]
+ovap=ovap[:,i_sel:j_sel]
+tke=tke[:,i_sel:j_sel]
+tke_dissip=tke_dissip[:,i_sel:j_sel]
+vitw=vitw[:,i_sel:j_sel]
+vitu=vitu[:,i_sel:j_sel]
+vitv=vitv[:,i_sel:j_sel]
+time_counter=time_counter[i_sel:j_sel]
 
 
 sigma1=0.15
@@ -84,8 +118,6 @@ sigma2=2.
 zmin_i=2
 zmax_i=7.25
 Frac_i_prof=0.405*(np.tanh((zfull/1000-zmin_i)/sigma1)-np.tanh((zfull/1000-zmax_i)/sigma2))-0.001
-
-
 
 sigma1=0.4
 
@@ -124,14 +156,40 @@ Qs_prof=0.07*(np.tanh((zfull/1000+zmin_s)/sigma3)-np.tanh((zfull/1000-zmax_s)/si
 Qi_prof[Qi_prof<0]=0.
 Qs_prof[Qs_prof<0]=0.
 
-Qi_prof_mesh=Qi_prof*Frac_i_prof
-Qs_prof_mesh=Qs_prof*Frac_s_tot_prof
 
 # Frac_i_prof[:]=1
 
+
+## Add Variability
+rng = np.random.default_rng(seed=0)
+
+sigma_Qi = 0.1
+sigma_Qs = 0.1
+
+k_Qi = 1 / sigma_Qi**2
+theta_Qi = sigma_Qi**2
+
+k_Qs = 1 / sigma_Qs**2
+theta_Qs = sigma_Qs**2
+
+gamma_noise_Qi = rng.gamma(shape=k_Qi, scale=theta_Qi, size=Qi_prof.shape)
+gamma_noise_Qs = rng.gamma(shape=k_Qs, scale=theta_Qs, size=Qs_prof.shape)
+
+
+
+# Apply variability
+Qi_prof_var = Qi_prof * gamma_noise_Qi
+Qs_prof_var = Qs_prof * gamma_noise_Qs
+
+
+
+
+Qi_prof_mesh=Qi_prof_var*Frac_i_prof
+Qs_prof_mesh=Qs_prof_var*Frac_s_tot_prof
+## Plot
 plt.figure('Cloud content')
-plt.plot(Qi_prof,zfull/1000-np.min(zfull)/1000,linestyle='--')
-plt.plot(Qs_prof,zfull/1000-np.min(zfull)/1000,linestyle='--')
+plt.plot(np.mean(Qi_prof_var,1),zfull[:,0]/1000-np.min(zfull)/1000,linestyle='--')
+plt.plot(np.mean(Qs_prof_var,1),zfull[:,0]/1000-np.min(zfull)/1000,linestyle='--')
 #
 # plt.plot(Qi_prof_mesh,zfull/1000-np.min(zfull)/1000,linestyle='--')
 # plt.plot(Qs_prof_mesh,zfull/1000-np.min(zfull)/1000,linestyle='--')
@@ -141,6 +199,32 @@ plt.xlabel('Mixing ratio (g kg$^{-1}$)')
 plt.ylabel('Altitude (km)')
 plt.ylim(0,12)
 plt.xlim(0,1)
+plt.show()
+
+
+## Cfad condensate
+
+levels_qs,cfad_Qs=CFAD(Qs_prof_var.T,zfull[:,0]/1000,0,0.2,0.005)
+levels_qi,cfad_Qi=CFAD(Qi_prof_var.T,zfull[:,0]/1000,0,0.7,0.02)
+
+plt.figure('Cloud content variability',figsize=(12,6))
+
+plt.subplot(121)
+plt.pcolor(levels_qs,zfull[:,0]/1000-np.min(zfull)/1000,cfad_Qs)
+plt.colorbar(label='occurence')
+plt.xlabel('Mixing ratio (g kg$^{-1}$)')
+plt.ylabel('Altitude (km)')
+plt.ylim(0,12)
+plt.xlim(0,0.2)
+
+plt.subplot(122)
+plt.pcolor(levels_qi,zfull[:,0]/1000-np.min(zfull)/1000,cfad_Qi)
+plt.colorbar(label='occurence')
+plt.xlabel('Mixing ratio (g kg$^{-1}$)')
+plt.ylabel('Altitude (km)')
+plt.ylim(0,12)
+plt.xlim(0,1)
+
 plt.show()
 
 
@@ -154,8 +238,8 @@ oliq[:]=0.
 
 plt.figure('Cloud fraction',figsize=(9,6))
 plt.subplot(121)
-plt.plot(Frac_i_prof,zfull/1000-np.min(zfull)/1000,color='k',label='Cloud')
-plt.plot(Frac_s_tot_prof,zfull/1000-np.min(zfull)/1000,color='orange',linestyle='--',label='Precipitation')
+plt.plot(Frac_i_prof[:,0],zfull[:,0]/1000-np.min(zfull)/1000,color='k',label='Cloud')
+plt.plot(Frac_s_tot_prof[:,0],zfull[:,0]/1000-np.min(zfull)/1000,color='orange',linestyle='--',label='Precipitation')
 plt.xlabel('Cloud or precipitation fraction')
 plt.ylabel('Altitude (km)')
 plt.legend(frameon=False, fontsize=14,loc='upper right')
@@ -164,8 +248,8 @@ plt.ylim(0,12)
 plt.tight_layout()
 
 plt.subplot(122)
-plt.plot(Qi_prof,zfull/1000-np.min(zfull)/1000,color='k',label='q$_{ice}$')
-plt.plot(Qs_prof,zfull/1000-np.min(zfull)/1000,color='orange',linestyle='--',label='q$_{snow}$')
+plt.plot(Qi_prof[:,0],zfull[:,0]/1000-np.min(zfull)/1000,color='k',label='q$_{ice}$')
+plt.plot(Qs_prof[:,0],zfull[:,0]/1000-np.min(zfull)/1000,color='orange',linestyle='--',label='q$_{snow}$')
 #
 plt.xlabel('In cloud mixing ratio (g kg$^{-1}$)')
 plt.ylabel('Altitude (km)')
@@ -174,8 +258,8 @@ plt.xlim(0,0.5)
 plt.ylim(0,12)
 plt.tight_layout()
 
-plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Profiles_cloudfrac_mr.png",dpi=600)
-plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Profiles_cloudfrac_mr.eps",dpi=600)
+# plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Profiles_cloudfrac_mr.png",dpi=600)
+# plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Profiles_cloudfrac_mr.eps",dpi=600)
 
 plt.show()
 
@@ -233,7 +317,7 @@ create_var("landmask", "f4", ("point",), np.zeros(npoint))
 
 #intermediate pressure levels
 phalf = pres
-phalf = np.zeros(pres.shape[0])
+phalf = np.zeros(pres.shape)
 phalf[1:npres] = 0.5 * (pres[:-1] + pres[1:])
 dp_bottom = pres[1] - pres[2]
 phalf[0] = pres[0] + dp_bottom
@@ -274,7 +358,7 @@ create_var("tca", "f4", ("level", "point"),Frac_i_prof)
 create_var("cca", "f4", ("level", "point"),np.zeros(np.shape(rneb))) #convective variable which needs to be set to 0
 create_var("precip_frac", "f4", ("level","point"), Frac_s_tot_prof) #in cloud + clear sky precipitation fraction from the new physics
 # create_var("precip_frac", "f4", ("level","point"), np.zeros(np.shape(rneb))) #in cloud + clear sky precipitation fraction from the new physics
-create_var("precip_fracclr", "f4", ("level","point"), np.zeros(len(Frac_s_tot_prof))) #in cloud + clear sky precipitation fraction from the new physics
+create_var("precip_fracclr", "f4", ("level","point"), np.zeros(np.shape(Frac_s_tot_prof))) #in cloud + clear sky precipitation fraction from the new physics
 
 # === 4. CLOUD WATER & ICE CONTENTS ===
 create_var("mr_lsliq", "f4", ("level", "point"),np.zeros(np.shape(oliq)))
@@ -331,10 +415,10 @@ for v in ["dtau_s", "dtau_c", "dem_s", "dem_c"]:
 
 array2=np.zeros((10,npres,npoint))
 array2[:,:,:]=1e-30
-array2[0,:,:]=20*1e-6
-array2[1,:,:]=50*1e-6
-array2[2,:,:]=0.5/1000
-array2[3,:,:]=1/1000
+# array2[0,:,:]=ref_liq*1e-6
+# array2[1,:,:]=ref_ice*1e-6
+# array2[2,:,:]=0.5/1000
+# array2[3,:,:]=1/1000
 
 create_var("Reff", "f4", ("hydro", "level", "point"),array2)
 
@@ -378,16 +462,3 @@ print("COSP input file created:", outfile)
 #_________reading test__________
 newnc = "Cosp_input_from_LMDZ.nc"
 newnc = Dataset(newnc, "r")
-
-#______auto input of array length________
-npoint = 1
-
-with open("COSP/driver/run/cosp2_input_ini2.txt", "r") as f:
-    content = f.read()
-
-
-content = content.replace("NPOINTS=npoint", f"NPOINTS="+str(npoint))
-# Write back
-with open("COSP/driver/run/cosp2_input.txt", "w") as f:
-    f.write(content)
-
