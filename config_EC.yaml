@@ -5,7 +5,7 @@
 # Commented alternatives:
 #   /home/grzegorc/AWACA/LMDZ/OUT_golden_case_v9/TEST-amip-ERA5-LAM.01_20250212_20250218_INS_histinsD17.nc
 #   /home/grzegorc/AWACA/EARTHCARE/LMDZ_traj1.nc
-LMDZ_output1D: '/home/grzegorc/AWACA/COSP_PAMTRAdev/Bench_conv.nc'
+LMDZ_output1D: '/home/grzegorc/AWACA/EARTHCARE/LMDZ_traj2.nc'
 
  ###############  Point selection ###############
 # isel and jsel define a subset of time points to process.
@@ -24,7 +24,7 @@ step: 1
 # convection   : include convective clouds of LMDZ
 blowing_snow: False
 precip_adj:   False
-convection:   True
+convection:   False
 
 # ==================================================
 # COSP Parameters
@@ -36,7 +36,7 @@ convection:   True
 # sub_var   : subgrid variability across subcolumns (Raisanen et al. 2004) — keep it False for coherence with LMDZ (it is only used for ice and snow now, see cosp2_test.f90 to use it on for cloud and rain or to change the distribution function parameters)
 
 nsubcol:  30
-nz:       39
+nz:       95
 superposed_clouds: True 
 exp_rand: False
 sub_var:  False
@@ -104,4 +104,4 @@ pp_deltaX:     4
 pp_deltaY:     2
 
 # Output NetCDF file for PAMTRA
-FOUTPUTpamtra: '../output/BENCH_include_exp.nc'
+FOUTPUTpamtra: '../output/Earthcare_traj2.nc'

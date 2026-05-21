@@ -129,6 +129,7 @@ pamData = dict()
 end = 'end'
 jsel={jsel}
 isel={isel}
+step={step}
 
 if jsel == end:
     jsel = len(time) 
@@ -192,36 +193,6 @@ if {blowing_snow}==True:
 print("Show Mixing ratios")
 plt.show()
 
-
-plt.figure('Profiles for first time index',figsize=(12,8))
-plt.subplot(131)
-plt.title('qhydro')
-plt.plot(np.sum(q_hydro[isel:jsel,0,:],-1)[0]*1000,z[isel:jsel,0,:][0]/1000)
-plt.ylim(0,10)
-plt.xlabel('Mixing ratio (g kg^-1)')
-plt.ylabel('Altitude (km)')
-
-plt.subplot(132)
-plt.title('vertical wind speed')
-plt.plot(w[isel:jsel,0,:][0],z[isel:jsel,0,:][0]/1000)
-plt.xlabel('w (m s-1)')
-plt.ylim(0,10)
-plt.ylabel('Altitude (km)')
-
-plt.subplot(133)
-plt.title('tke_dissip')
-plt.plot(tke_dissip[isel:jsel,0,:][0],z[isel:jsel,0,:][0]/1000)
-plt.ylim(0,10)
-plt.xlabel('$\epsilon$ $m^2$ $s-2$')
-plt.xlim(1e-2,1e2)
-plt.xscale('log')
-plt.ylabel('Altitude (km)')
-
-## Add convetive content to large scale content
-
-
-
-
 #_______ssrga scattering parameters (see the table of Billault-Roux and Berne 2025)
 #kappa_beta_gamma_zeta
 
@@ -246,21 +217,21 @@ if Scattering=='Hogan2017_v2_aggregate_bullet_rosettes':
 
 r_liq=12e-6
 Rho_liq=1000.
-N_liq=(q_hydro[isel:jsel,:,:,id_liq]*Rho_air[isel:jsel,:,:])/(Rho_liq*4/3*np.pi*r_liq**3)
+N_liq=(q_hydro[isel:jsel,:,:,id_liq][::step,:,:]*Rho_air[isel:jsel,:,:][::step,:,:])/(Rho_liq*4/3*np.pi*r_liq**3)
 pam.df.addHydrometeor(("liq", 1., 1, Rho_liq, -99., -99., -99., -99. , 3, 1, "mono", -99., -99., -99., -99.,2*r_liq, -99.,"mie-sphere", "khvorostyanov01_drops", 0.))
 
 ##___Rain_properties___
 
 r_rain=0.0005
 Rho_rain=1000.
-N_rain=q_hydro[isel:jsel,:,:,id_rain]/(Rho_rain*4/3*np.pi*r_rain**3)
+N_rain=q_hydro[isel:jsel,:,:,id_rain][::step,:,:]/(Rho_rain*4/3*np.pi*r_rain**3)
 pam.df.addHydrometeor(("rain",1.,  1 , Rho_rain , -99., -99., -99., -99. , 3, 1, "mono",-99.0, -99.0, -99.0, -99.0,2*r_rain,-99.0,"mie-sphere","lmdz_rain", 0.))
 #pam.df.addHydrometeor(("rain",1.,  1 , Rho_rain , -99., -99., -99., -99. , 3, 1, "mono",-99.0, -99.0, -99.0, -99.0,2*r_rain,-99.0,"khvorostyanov01_drops","lmdz_rain", 0.))
 
 ##___Snow_properties___
 r_snow=0.001
 Rho_snow = 1.e3 * 0.178 * ( r_snow * 2 * 1000. )**(-0.922)
-N_snow=(q_hydro[isel:jsel,:,:,id_snow]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
+N_snow=(q_hydro[isel:jsel,:,:,id_snow][::step,:,:]*Rho_air[isel:jsel,:,:][::step,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
 
 #pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_snow,-99.0,"mie-sphere","lmdz_snow",0.))
 pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_snow,-99.0,"ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs),"lmdz_snow",0.))
@@ -270,7 +241,7 @@ pam.df.addHydrometeor(("snow",AR_snow, -1 , Rho_snow, -99., -99., np.pi/4., 2. ,
 r_bs=50e-6
 AR_bs=1.
 Rho_bs = 917.
-N_bs=(q_hydro[isel:jsel,:,:,id_bs]*Rho_air[isel:jsel,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
+N_bs=(q_hydro[isel:jsel,:,:,id_bs][::step,:,:]*Rho_air[isel:jsel,:,:][::step,:,:])/(Rho_snow*4/3*np.pi*r_snow**3)
 
 pam.df.addHydrometeor(("bs",AR_bs, -1 , Rho_bs, -99., -99., np.pi/4., 2. ,  3 ,1,"mono",-99.0, -99.0, -99.0, -99.0,2*r_bs,-99.0,"ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs),"lmdz_bs",0.))
 
@@ -279,7 +250,7 @@ print("pam.df",pam.df)
 Rho_ice=917.
 AR_ice=1.#
 r_ice=1e-6*(45.8966*(Qi*Rho_air*1e3)**0.2214 + 0.7957*(Qi*Rho_air*1e3)**0.2535*(T - 273.15 + 190.))/2 #as in lmdz physics from Sun and Rikus 1999
-N_ice=(Qi[isel:jsel,:,:]*Rho_air[isel:jsel,:,:])/(Rho_ice*4/3*np.pi*r_ice[isel:jsel,:,:]**3)
+N_ice=(Qi[isel:jsel,:,:][::step,:,:]*Rho_air[isel:jsel,:,:][::step,:,:])/(Rho_ice*4/3*np.pi*r_ice[isel:jsel,:,:][::step,:,:]**3)
 
 
 for i in range(len(D_ice_bins_center)):
@@ -294,16 +265,16 @@ for i in range(len(D_ice_bins_center)):
     #pam.df.addHydrometeor(("ic"+str(i), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "ss-rayleigh-gans_%.3f_%.3f_%.3f_%.3f"%tuple(ssrg_coefs), "heymsfield10_particles",0.))
     pam.df.addHydrometeor(("ic"+str(D_ice_bins_center[i]), AR_ice, -1 , Rho_ice,  -99,-99 ,np.pi/4, 2.  , 3 ,1, "mono", -99., -99., -99., -99., D_ice_bins_center[i]*1e-6, -99., "mie-sphere", "heymsfield10_particles",0.))
 # Data input
-pamData["lon"] = lon[isel:jsel,:]
-pamData["lat"] = lat[isel:jsel,:]
-pamData["temp"] = T[isel:jsel,:,:]
-pamData["relhum"] = RH[isel:jsel,:,:]
-pamData["hgt"] = z[isel:jsel,:,:]
-pamData["press"] = p[isel:jsel,:,:]
-pamData["hydro_q"] = q_hydro[isel:jsel,:,:]
-pamData["turb_edr"]=tke_dissip[isel:jsel,:,:]#/T[isel:jsel,:,:]
-pamData["wind_w"] =-w[isel:jsel,:,:]#/T[isel:jsel,:,:]*0.1
-pamData["wind_uv"] = (u[isel:jsel,:,:]**2+v[isel:jsel,:,:]**2)**0.5#/T[isel:jsel,:,:]*0.1
+pamData["lon"] = lon[isel:jsel,:][::step,:]
+pamData["lat"] = lat[isel:jsel,:][::step,:]
+pamData["temp"] = T[isel:jsel,:,:][::step,:]
+pamData["relhum"] = RH[isel:jsel,:,:][::step,:]
+pamData["hgt"] = z[isel:jsel,:,:][::step,:,:]
+pamData["press"] = p[isel:jsel,:,:][::step,:,:]
+pamData["hydro_q"] = q_hydro[isel:jsel,:,:][::step,:,:]
+pamData["turb_edr"]=tke_dissip[isel:jsel,:,:][::step,:,:]#/T[isel:jsel,:,:]
+pamData["wind_w"] =-w[isel:jsel,:,:][::step,:,:]#/T[isel:jsel,:,:]*0.1
+pamData["wind_uv"] = (u[isel:jsel,:,:][::step,:,:]**2+v[isel:jsel,:,:][::step,:,:]**2)**0.5#/T[isel:jsel,:,:]*0.1
 
 pam.createProfile(**pamData)
 
@@ -389,11 +360,11 @@ if "{Where_is_radar}"=="Aircraft":
     
     if '{Pointing}'=='down' or '{Pointing}'=='both':
         pam.nmlSet['radar_attenuation']='top-down'
-        pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
+        pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][::step][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
 
     elif '{Pointing}'=='up':
         pam.nmlSet['radar_attenuation']='bottom-up'
-        pam.p['obs_height'][:,:,1] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
+        pam.p['obs_height'][:,:,1] = np.repeat(nc_aircraft['radar_altitude'][:][::step][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
 
     
     print("pam.p['obs_height']",pam.p['obs_height'][:,:,:])
@@ -459,24 +430,26 @@ if Run_pamtra==True:
     #print('radar_vel', pam.r["radar_vel"],np.shape(pam.r["radar_vel"][0]),len(pam.r["radar_vel"][0]))
 
 
-    plt.figure('Quicklook reflectivity in subcol 0')
-    plt.pcolormesh(time[isel:jsel],pam.r["radar_hgt"][0,0,:]/1000,pam.r["Ze"][:,0,:,0,0,0].T,vmin=-30,vmax=30,cmap="jet")
+    #plt.figure('Quicklook reflectivity in subcol 0')
+    #plt.pcolormesh(time[isel:jsel],pam.r["radar_hgt"][0,0,:]/1000,pam.r["Ze"][:,0,:,0,0,0].T,vmin=-30,vmax=30,cmap="jet")
+    #plt.ylim(0,12)
+    #plt.colorbar()
+
+    plt.figure('Quicklook max reflectivity',figsize=(10,6))
+    plt.pcolormesh(time[isel:jsel][::step],pam.r["radar_hgt"][0,0,:]/1000,np.max(pam.r["Ze"][:,:,:,0,0,0].T,1),vmin=-30,vmax=30,cmap="jet")
     plt.ylim(0,12)
     plt.colorbar()
 
-    plt.figure('Quicklook max reflectivity')
-    plt.pcolormesh(time[isel:jsel],pam.r["radar_hgt"][0,0,:]/1000,np.max(pam.r["Ze"][:,:,:,0,0,0].T,1),vmin=-30,vmax=30,cmap="jet")
+    plt.figure('Quicklook reflectivity in all subcols',figsize=(10,6))
+    Ze_conc=np.concatenate(pam.r["Ze"][:,:,:,0,0,0],0)
+    Ze_conc=Ze_conc.T
+    plt.pcolormesh(np.arange(0,np.shape(Ze_conc)[1],1),pam.r["radar_hgt"][0,0,:]/1000,Ze_conc,vmin=-30,vmax=30,cmap="jet")
     plt.ylim(0,12)
     plt.colorbar()
 
-    plt.figure('First time index reflectivity profile')
-    plt.plot(pam.r["Ze"][0,0,:,0,0,0],pam.r["radar_hgt"][0,0,:]/1000)
-    plt.ylabel('Altitude (km)')
-    plt.xlabel('Reflectivity (dBZ)')
-    plt.xlim(-30,30) 
-    plt.ylim(0,12)
 
 
+    #print("shape Ze",np.shape(pam.r["Ze"]))
 
     if Run_spectra==True:
         #print('Shape Spectra',np.shape(pam.r["radar_vel"]),np.shape(pam.r["radar_spectra"]))
@@ -538,7 +511,7 @@ if Write_output==True and Run_pamtra==True:
     with Dataset(output_file, "w", format="NETCDF4") as nc_out:
 
     # Dimensions
-        nc_out.createDimension("time", len(time[isel:jsel]))
+        nc_out.createDimension("time", len(time[isel:jsel][::step]))
         nc_out.createDimension("col", ncol)
         #nc_out.createDimension("level", len(pam.r["radar_hgt"][0,0,:]))
         nc_out.createDimension("level", T.shape[2])
@@ -549,7 +522,7 @@ if Write_output==True and Run_pamtra==True:
             nc_out.createDimension("hydro", 4)
     # Variables simples
 
-        nc_out.createVariable("time", "f8", ("time",))[:] = time[isel:jsel]
+        nc_out.createVariable("time", "f8", ("time",))[:] = time[isel:jsel][::step]
         nc_out.createVariable("col", "i4", ("col",))[:] = np.arange(ncol)
         nc_out.createVariable("level", "f4", ("time","level"))[:] = pam.r["radar_hgt"][:,0,:]
         if ok_bs==True:
@@ -598,7 +571,7 @@ if Write_output==True and Run_pamtra==True:
 
 if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
     pam.nmlSet['radar_attenuation']='bottom-up'
-    pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
+    pam.p['obs_height'][:,:,0] = np.repeat(nc_aircraft['radar_altitude'][:][::step][isel:jsel, np.newaxis], ncol, axis=1)#{Altitude_obs}
     nc_aircraft.close()
     print("pam 2nd nml",pam.nmlSet)
     if Run_pamtra==True:
@@ -618,7 +591,7 @@ if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
         with Dataset(output_file[:-3]+"_upward_part.nc", "w", format="NETCDF4") as nc_out:
 
     # Dimensions
-            nc_out.createDimension("time", len(time[isel:jsel]))
+            nc_out.createDimension("time", len(time[isel:jsel][::step]))
             nc_out.createDimension("col", ncol)
             nc_out.createDimension("level", T.shape[2])
             if ok_bs==True:
@@ -629,7 +602,7 @@ if "{Where_is_radar}"=="Aircraft" and "{Pointing}"=='both':
             nc_out.createDimension("bins", len(pam.r["radar_vel"][0]))
 
     # Variables simples
-            nc_out.createVariable("time", "f8", ("time",))[:] = time[isel:jsel]
+            nc_out.createVariable("time", "f8", ("time",))[:] = time[isel:jsel][:step]
             nc_out.createVariable("col", "i4", ("col",))[:] = np.arange(ncol)
             nc_out.createVariable("level", "f4", ("time","level"))[:] = pam.r["radar_hgt"][:,0,:]
             if ok_bs==True:

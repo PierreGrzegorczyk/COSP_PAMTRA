@@ -22,7 +22,7 @@ Run_pamtra=True
 Run_spectra=False
 Write_output=True
 
-output_file = "../output/BENCH_exclude_new.nc"
+output_file = "../output/Earthcare_traj2.nc"
 output_file2 = output_file[:-3]+"_upward_part.nc"
 
 if "Ground"=="Aircraft" and "up"=='both' and Write_output==True:

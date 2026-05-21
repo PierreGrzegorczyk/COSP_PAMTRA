@@ -11,16 +11,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-ok_bs=False
-ok_poprecip=False
-ok_conv=False
+ok_bs={blowing_snow}
+ok_poprecip={precip_adj}
+ok_conv={convection}
 # ___________________________________________
 
 ## Path and data input
 import csv
 plt.rcParams['font.size'] = 13
 
-nc_file = '/home/grzegorc/AWACA/EARTHCARE/LMDZ_traj2.nc'
+nc_file = '{LMDZ_output1D}'
 
 nc_data = Dataset(nc_file, "r")
 
@@ -40,12 +40,9 @@ else:
 pres=nc_data.variables["pres"][:].reshape(npoint,npres)
 pres=pres.T
 
-time_counter=nc_data.variables["time_counter"][:]
-
-
 # Input variables needed for cosp
 var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
-# var_list.append("pres")
+
 
 if ok_bs==True:
     var_list.append('qbs')
@@ -61,23 +58,13 @@ if ok_conv==True:
     var_list.append('pr_con_l')
     var_list.append('clwcon')
 
-dim_test=np.shape(globals()["pres"])[0]
 
 for var in var_list:
     globals()[var]=nc_data.variables[var][:]
     if len(np.shape(globals()[var]))>1:
         globals()[var]=globals()[var].reshape(npoint,npres)
         globals()[var]=globals()[var].T
-        # print(var,': wrong shape ?',np.shape(globals()[var])) #debug
 
-    if len(np.shape(globals()[var]))>1 and dim_test==np.shape(globals()["time_counter"])[0]: #special case if the data are transposed
-        globals()[var]=globals()[var].T
-        # print(var,': good shape ?',np.shape(globals()[var])) #debug
-
-if len(np.shape(globals()[var]))>1 and dim_test==np.shape(globals()["time_counter"])[0]:
-    pres=pres.T
-    npres = np.shape(nc_data.variables["pres"])[0] #number of vertical presels
-    npoint = np.shape(nc_data.variables["pres"])[1] #number of points in x (i.e. the time)
 
 if len(lon)==1: #fix 1D profile
     lat = np.array(list(nc_data.variables["lat"][:])*npoint)

@@ -43,6 +43,7 @@
   precip_adj={precip_adj}  ! activate the precip adjustment of Hillman et al. (2018) based on the model precip fraction
   exp_rand={exp_rand}  ! activate the max_random overlap from Raisanen et al. (2004) generator
   sub_var={sub_var}  ! activate the subgrid variability across the subcolumns based on the Raisanen et al. (2004) generator
+  superposed_clouds={superposed_clouds}  ! can convective and large-scale clouds coexist ?
 
   !----------------------------------------------------------------------------------
   !--------------- Inputs related to radar simulations

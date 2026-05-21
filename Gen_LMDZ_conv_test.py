@@ -357,8 +357,8 @@ create_var("vitv", "f4", ("level", "point"),vitv)
 # cloud fraction
 pfraclr[:]=0.
 # create_var("tca", "f4", ("level", "point"),Frac_i_prof)
-create_var("tca", "f4", ("level", "point"),Frac_i_prof*1.)
-create_var("cca", "f4", ("level", "point"),Frac_i_prof*0.9) #convective variable which needs to be set to 0
+create_var("tca", "f4", ("level", "point"),Frac_i_prof*1)
+create_var("cca", "f4", ("level", "point"),Frac_i_prof*0.5) #convective variable which needs to be set to 0
 create_var("precip_frac", "f4", ("level","point"), Frac_s_tot_prof*0.5) #in cloud + clear sky precipitation fraction from the new physics
 # create_var("precip_frac", "f4", ("level","point"), np.zeros(np.shape(rneb))) #in cloud + clear sky precipitation fraction from the new physics
 create_var("precip_fracclr", "f4", ("level","point"), np.zeros(np.shape(Frac_s_tot_prof))) #in cloud + clear sky precipitation fraction from the new physics
@@ -466,14 +466,14 @@ print("COSP input file created:", outfile)
 newnc = "Cosp_input_from_LMDZ.nc"
 newnc = Dataset(newnc, "r")
 
-#______auto input of array length________
-npoint = len(lon)
-
-with open("COSP/driver/run/cosp2_input_ini2.txt", "r") as f:
-    content = f.read()
-
-
-content = content.replace("NPOINTS=npoint", f"NPOINTS="+str(npoint))
-# Write back
-with open("COSP/driver/run/cosp2_input.txt", "w") as f:
-    f.write(content)
+# #______auto input of array length________
+# npoint = len(lon)
+#
+# with open("COSP/driver/run/cosp2_input_ini2.txt", "r") as f:
+#     content = f.read()
+#
+#
+# content = content.replace("NPOINTS=npoint", f"NPOINTS="+str(npoint))
+# # Write back
+# with open("COSP/driver/run/cosp2_input.txt", "w") as f:
+#     f.write(content)

@@ -19,11 +19,12 @@ nsubcol: 50
 nz: 95
 
 blowing_snow: False #TURN ON when using blowing snow of Vignon et al. (2026)
-precip_adj: True #TURN ON for POPRECIP the new precip scheme of LMDZ: it  activate the precip adjustment of Hillman et al. (2018) based on the model precip fraction
+precip_adj: True #True #TURN ON for POPRECIP the new precip scheme of LMDZ: it  activate the precip adjustment of Hillman et al. (2018) based on the model precip fraction
 convection: True #If you consider convective clouds of LMDZ
 
 exp_rand: False  #TURN OFF for coherence with LMDZ: activate the max_random overlap from Raisanen et al. (2004) generator
 sub_var: False  #TURN OFF for coherence with LMDZ: activate the subgrid variability across the subcolumns based on the Raisanen et al. (2004) generator
+superposed_clouds: True
 
 
 # Output NetCDF file produced by COSP
@@ -64,8 +65,22 @@ Scattering: 'Ori2021_mix_column_dendrites' #Ice particle type for SSRGA:
 #Scattering: 'Ori2021_rimed_aggregate_dendrites' #Ice particle type for SSRGA: 
 #Scattering names: Ori2021_mix_column_dendrites,Ori2021_rimed_aggregate_dendrites,Hogan2017_v1_aggregate_bullet_rosettes,Hogan2017_v2_aggregate_bullet_rosettes
 Radar_type: 'BASTA' #MRR, STXPOL, BASTA (12.5m resolution), MIRA35C
-adjust_noise: True
-Ze_noise_1km: -200 
+
+custom_radar: False #if you want to define the radar characteristics by yourself
+
+ ############### Custom radar (overrides instrument noise level defined in PAMTRA) ###############
+# freq         : radar frequency (GHz)
+# Beam_width   : beam width (°)
+# Ze_noise_1km : noise level at 1 km (dBZ)
+# dt           : time resolution (s)
+# Vnyq         : Nyquist velocity (m s-1)
+# nfft         : number of FFT points (bins in radar spectra)
+freq:         95.0
+Beam_width:   0.8
+Ze_noise_1km: -200
+dt:           9
+Vnyq:         10
+nfft:         512
 
 
 ### Pamtra running parameters

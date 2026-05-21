@@ -40,9 +40,12 @@ else:
 pres=nc_data.variables["pres"][:].reshape(npoint,npres)
 pres=pres.T
 
+time_counter=nc_data.variables["time_counter"][:]
+
+
 # Input variables needed for cosp
 var_list=["lon","lat","oliq","oice","zfull","zhalf","temp","rhl","rneb",'pr_lsc_i','pr_lsc_l','ref_liq','ref_ice',"ovap","tke","tke_dissip","vitw","vitu","vitv",'time_counter'] #don't forget pres
-
+# var_list.append("pres")
 
 if ok_bs==True:
     var_list.append('qbs')
@@ -53,17 +56,28 @@ if ok_poprecip==True:
 
 if ok_conv==True:
     var_list.append('rnebcon')
+    var_list.append('rnebls')
     var_list.append('pr_con_i')
     var_list.append('pr_con_l')
     var_list.append('clwcon')
 
+dim_test=np.shape(globals()["pres"])[0]
 
 for var in var_list:
     globals()[var]=nc_data.variables[var][:]
     if len(np.shape(globals()[var]))>1:
         globals()[var]=globals()[var].reshape(npoint,npres)
         globals()[var]=globals()[var].T
+        # print(var,': wrong shape ?',np.shape(globals()[var])) #debug
 
+    if len(np.shape(globals()[var]))>1 and dim_test==np.shape(globals()["time_counter"])[0]: #special case if the data are transposed
+        globals()[var]=globals()[var].T
+        # print(var,': good shape ?',np.shape(globals()[var])) #debug
+
+if len(np.shape(globals()[var]))>1 and dim_test==np.shape(globals()["time_counter"])[0]:
+    pres=pres.T
+    npres = np.shape(nc_data.variables["pres"])[0] #number of vertical presels
+    npoint = np.shape(nc_data.variables["pres"])[1] #number of points in x (i.e. the time)
 
 if len(lon)==1: #fix 1D profile
     lat = np.array(list(nc_data.variables["lat"][:])*npoint)
@@ -155,6 +169,9 @@ create_var("vitv", "f4", ("level", "point"),vitv)
 
 # cloud fraction
 
+#if ok_conv==True:
+#    create_var("tca", "f4", ("level", "point"),rnebls)
+#else:
 create_var("tca", "f4", ("level", "point"),rneb)
 
 if ok_poprecip==True:
@@ -163,8 +180,13 @@ if ok_poprecip==True:
 
 # === 4. LS CLOUD WATER & ICE CONTENTS ===
 
-create_var("mr_lsliq", "f4", ("level", "point"),oliq)
-create_var("mr_lsice", "f4", ("level", "point"),oice)
+if ok_conv==True:
+    create_var("mr_lsliq", "f4", ("level", "point"),oliq*rnebls/(rnebls+rnebcon+1e-30))
+    create_var("mr_lsice", "f4", ("level", "point"),oice*rnebls/(rnebls+rnebcon+1e-30))
+else:
+    create_var("mr_lsliq", "f4", ("level", "point"),oliq)
+    create_var("mr_lsice", "f4", ("level", "point"),oice)
+
 
 if ok_bs==True:
     create_var("mr_bs", "f4", ("level", "point"),qbs)

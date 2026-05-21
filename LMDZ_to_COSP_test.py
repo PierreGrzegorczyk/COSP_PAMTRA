@@ -150,32 +150,35 @@ rho=pres/(287*temp)
 pflux_s=Qs_prof_mesh*rho
 oliq[:]=0.
 
+plt.rcParams['font.size'] = 14
 
 
-plt.figure('Cloud fraction',figsize=(9,6))
+plt.figure('Cloud fraction',figsize=(8,5))
+
 plt.subplot(121)
-plt.plot(Frac_i_prof,zfull/1000-np.min(zfull)/1000,color='k',label='Cloud')
+plt.title('a)',loc="left")
+plt.plot(Frac_i_prof,zfull/1000-np.min(zfull)/1000,color='purple',label='Cloud',linestyle='--')
 plt.plot(Frac_s_tot_prof,zfull/1000-np.min(zfull)/1000,color='orange',linestyle='--',label='Precipitation')
 plt.xlabel('Cloud or precipitation fraction')
-plt.ylabel('Altitude (km)')
+plt.ylabel('Altitude [km]')
 plt.legend(frameon=False, fontsize=14,loc='upper right')
 plt.xlim(0,1)
 plt.ylim(0,12)
 plt.tight_layout()
 
 plt.subplot(122)
-plt.plot(Qi_prof,zfull/1000-np.min(zfull)/1000,color='k',label='q$_{ice}$')
-plt.plot(Qs_prof,zfull/1000-np.min(zfull)/1000,color='orange',linestyle='--',label='q$_{snow}$')
-#
-plt.xlabel('In cloud mixing ratio (g kg$^{-1}$)')
-plt.ylabel('Altitude (km)')
+plt.title('b)',loc="left")
+plt.plot(Qi_prof,zfull/1000-np.min(zfull)/1000,color='purple',label='q$_{ice}$')
+plt.plot(Qs_prof,zfull/1000-np.min(zfull)/1000,color='orange',label='q$_{snow}$')
+plt.xlabel('In cloud mixing ratio [g kg$^{-1}$]')
+plt.ylabel('Altitude [km]')
 plt.legend(frameon=False, fontsize=14,loc='upper right')
 plt.xlim(0,0.5)
 plt.ylim(0,12)
 plt.tight_layout()
 
-plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Profiles_cloudfrac_mr.png",dpi=600)
-plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Profiles_cloudfrac_mr.eps",dpi=600)
+plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Fig_profiles_sensi.png",dpi=600)
+plt.savefig("/home/grzegorc/AWACA/COSP_PAMTRAdev/Paper/Fig_profiles_sensi.eps",dpi=600)
 
 plt.show()
 

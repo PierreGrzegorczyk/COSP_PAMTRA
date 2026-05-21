@@ -153,6 +153,7 @@ program cosp2_test
        csat_vgrid,                & ! CloudSat vertical grid? 
        precip_adj,                & ! Precip adjusment from Hillman et al (2018) base don the precip fraction (added by PG) 
        exp_rand,                  & ! activate the max-random overlap from Raisanen et al. (2004) generator 
+       superposed_clouds,         & ! activate the max-random overlap from Raisanen et al. (2004) generator 
        sub_var,                   & ! activate the subgrid variability across the subcolumns based on the Raisanen et al. (2004) generator 
        use_precipitation_fluxes     ! True if precipitation fluxes are input to the 
                                     ! algorithm 
@@ -173,8 +174,8 @@ program cosp2_test
        fileIN                       ! dinput+finput
   namelist/COSP_INPUT/overlap, isccp_topheight, isccp_topheight_direction, npoints,      &
        npoints_it, ncolumns, nlevels, use_vgrid, Nlvgrid, csat_vgrid, dinput, finput,    &
-       foutput, precip_adj,exp_rand,sub_var,cloudsat_radar_freq, surface_radar,          & 
-       cloudsat_use_gas_abs, cloudsat_do_ray,                                            &
+       foutput, precip_adj,exp_rand,sub_var,superposed_clouds,cloudsat_radar_freq,       &
+       surface_radar,cloudsat_use_gas_abs, cloudsat_do_ray,                              &
        cloudsat_k2, cloudsat_micro_scheme, lidar_ice_type, use_precipitation_fluxes,     &
        rttov_platform, rttov_satellite, rttov_Instrument, rttov_Nchannels,               &
        rttov_Channels, rttov_Surfem, rttov_ZenAng, co2, ch4, n2o, co
@@ -507,7 +508,7 @@ program cosp2_test
      ! Generate subcolumns and compute optical inputs.
      !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      call subsample_and_optics(nPtsPerIt,nLevels,nColumns,N_HYDRO,overlap,precip_adj,          &
-          exp_rand,sub_var,use_vgrid,use_precipitation_fluxes,lidar_ice_type,sd,               &
+          exp_rand,sub_var,superposed_clouds,use_vgrid,use_precipitation_fluxes,lidar_ice_type,sd,               &
           tca(start_idx:end_idx,Nlevels:1:-1), precip_frac(start_idx:end_idx,Nlevels:1:-1),    &
           precip_fracclr(start_idx:end_idx,Nlevels:1:-1),cca(start_idx:end_idx,Nlevels:1:-1),  &
           fl_lsrain(start_idx:end_idx,Nlevels:1:-1),fl_lssnow(start_idx:end_idx,Nlevels:1:-1), &
@@ -559,7 +560,7 @@ contains
   ! SUBROUTINE subsample_and_optics
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
   subroutine subsample_and_optics(nPoints, nLevels, nColumns, nHydro, overlap, precip_adj,  &
-       exp_rand,sub_var,use_vgrid, use_precipitation_fluxes, lidar_ice_type, sd, tca,       & 
+       exp_rand,sub_var,superposed_clouds,use_vgrid, use_precipitation_fluxes, lidar_ice_type, sd, tca,       & 
        precip_frac, precip_fracclr, cca, fl_lsrainIN, fl_lssnowIN,                          &
        fl_lsgrplIN, fl_ccrainIN, fl_ccsnowIN, mr_lsliq, mr_lsice,mr_bs,mr_ccliq,mr_ccice,   &
        reffIN, dtau_c, dtau_s, dem_c, dem_s, cospstateIN, cospIN,zlev_half)
@@ -571,7 +572,7 @@ contains
     real(wp),intent(in),dimension(nPoints,nLevels,nHydro) :: reffIN
     logical,intent(in) :: use_vgrid ! .false.: outputs on model levels
                                     ! .true.:  outputs on evenly-spaced vertical levels.
-    logical,intent(in) :: use_precipitation_fluxes,precip_adj,exp_rand,sub_var
+    logical,intent(in) :: use_precipitation_fluxes,precip_adj,exp_rand,sub_var,superposed_clouds
     type(size_distribution),intent(inout) :: sd
     
     ! Outputs
@@ -629,28 +630,52 @@ contains
        enddo
 
 
-       ! Subgrid generator
+       !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+       ! GENERATE SUBCOLS
+       !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-       if (exp_rand) then !R04 generator: exp-random hypothesis
-       call gen_subcol_cld(NPoints, Ncolumns, Nlevels, tca, alphac, cospIN%frac_out, 0)
-       print *, 'Generate subcolumns with exp-random hypothesis: R04 generator'
 
-       else
-       print *, 'Generate subcolumns with max-random hypothesis: SCOPS code'
-       frac_out_ls(:,:,:) = 0
-       call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca*0,overlap,cospIN%frac_out,0) !cca*0 deccorelate CV and LS clouds
-       !frac_out_ls(:,:,:) = 0
-       where (cospIN%frac_out(:,:,:) == 1)
-       frac_out_ls(:,:,:)=1.
-       end where
+       !!!! Use the R04 generator: exp-random hypothesis
 
-       !frac_out_cv(:,:,:) = 0
-       cospIN%frac_out(:,:,:) = 0
-       call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca,overlap,cospIN%frac_out,0)
+       if (exp_rand) then               
+        print *, 'Generate subcolumns with exp-random hypothesis: R04 generator'
+        frac_out_ls(:,:,:) = 0
 
-       !where (cospIN%frac_out(:,:,:) == 2)
-       !frac_out_cv(:,:,:) = 2
-       !end where
+         call gen_subcol_cld(NPoints, Ncolumns, Nlevels, tca, alphac, cospIN%frac_out, 0)
+
+         where (cospIN%frac_out(:,:,:) == 1) ! Store subcols of LS clouds
+         frac_out_ls(:,:,:)=1.
+         end where
+
+         cospIN%frac_out(:,:,:) = 0
+         call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca,overlap,cospIN%frac_out,0) ! Start scops for the CV clouds only
+
+       !!! Use scops (max-random hypothesis)
+
+       else                             ! Use scops (max-random hypothesis)
+        print *, 'Generate subcolumns with max-random hypothesis: SCOPS code'
+        frac_out_ls(:,:,:) = 0
+
+        if (superposed_clouds) then     ! Can CV and LS coexist ?
+         call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca*0,overlap,cospIN%frac_out,0) !cca*0 deccorelate CV and LS clouds
+
+         where (cospIN%frac_out(:,:,:) == 1) ! Store subcols of LS clouds
+         frac_out_ls(:,:,:)=1.
+         end where
+
+         cospIN%frac_out(:,:,:) = 0
+         call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca,overlap,cospIN%frac_out,0) ! Start again scops for the CV clouds only
+
+
+        else ! Exclude CV and LS clouds
+         call scops(NPoints,Nlevels,Ncolumns,rngs,tca,cca,overlap,cospIN%frac_out,0) 
+
+         where (cospIN%frac_out(:,:,:) == 1) ! Store subcols of LS clouds
+         frac_out_ls(:,:,:)=1.
+         end where
+
+        endif
+
 
        endif
 
@@ -679,27 +704,18 @@ contains
        frac_prec_ls(:,:,:) = 0
        frac_prec_cv(:,:,:) = 0
 
-       !where (frac_prec(:,:,:) == 1 .or. frac_prec(:,:,:) == 2)
-       !    frac_prec_ls(:,:,:) = 1
-       !end where
-
-       where (frac_prec(:,:,:) == 2 .or. frac_prec(:,:,:) == 3)
+       where (frac_prec(:,:,:) == 2 .or. frac_prec(:,:,:) == 3) ! Select the convective precipitation subcols
            frac_prec_cv(:,:,:) = 2
        end where
 
-       !where (cospIN%frac_out(:,:,:) == 1)
-       !    frac_out_ls(:,:,:) = 1
-       !end where
-
-
-       if (precip_adj) then
+       if (precip_adj) then          ! precip adjust from H18
        print *, 'Precip adjustment from Hillman et al. (2018)'
-       call adjust_precip(nPoints,nColumns,nLevels,precip_frac,frac_out_ls,frac_prec_ls,1, 0)
+       call adjust_precip(nPoints,nColumns,nLevels,precip_frac,frac_out_ls,frac_prec_ls,1, 0) ! Treat LS precipitation with H18
 
        frac_prec(:,:,:) = 0
-       frac_prec(:,:,:) = frac_prec_cv(:,:,:)+frac_prec_ls(:,:,:)
+       frac_prec(:,:,:) = frac_prec_cv(:,:,:)+frac_prec_ls(:,:,:) ! Add CV precip of prec_cosp with LS precip of adjust_precip
  
-       where (frac_prec(:,:,:) == 4) ! yields 4 when both are present, which is then remapped to 2 
+       where (frac_prec(:,:,:) == 4) ! Security (probably useless) 
            frac_prec(:,:,:) = 3
        end where
        endif
